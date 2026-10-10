@@ -1,0 +1,334 @@
+{
+ "site": "https://arngard.github.io/tripod-song/",
+ "notice": "이 페이지는 한 개인이 규칙 기반 전략을 시험하며 매일 기계적으로 계산해 공개하는 판정 기록이다. 매수, 매도 권유가 아니며, 투자 판단과 그 결과의 책임은 각자에게 있다. 백테스트 지표와 트라이팟 플레이버 비교 탭의 수치는 지수 종가로 합성한 과거 한 경로의 계산값이고, 판정에는 자료 오류나 지연이 있을 수 있다. 자료: Yahoo Finance, FRED.",
+ "generated_at_kst": "2026-10-11 07:55:30",
+ "last_close": {
+  "day": "2026-10-09",
+  "et": "2026-10-09 16:00",
+  "kst": "2026-10-10 05:00",
+  "early": false,
+  "trading": true
+ },
+ "next_close": {
+  "day": "2026-10-12",
+  "et": "2026-10-12 16:00",
+  "kst": "2026-10-13 05:00",
+  "early": false,
+  "trading": true
+ },
+ "default_flavor": "phrixus",
+ "flavors": {
+  "phrixus": {
+   "name": "phrixus 1.0",
+   "summary": "추세를 불문하고 준수한 수익률",
+   "warning": null,
+   "judged": true,
+   "problems": [],
+   "settled_allocation": "TQQQ 100%",
+   "held_allocation": "TQQQ 100%",
+   "trade_next_session": null,
+   "signal": {
+    "trend": "상승",
+    "stability": "안정",
+    "allocation": "TQQQ 100%",
+    "streak": 362,
+    "confirm_days": 4
+   },
+   "indicators": {
+    "ndx_close": 30883.150390625,
+    "rel_to_ma": 0.1340321710848391,
+    "ma_days": 241,
+    "vix_avg": 15.365714345659528,
+    "vix_window": 7,
+    "dd52": -0.010931180090935522
+   },
+   "next_close_thresholds": [
+    {
+     "label": "상승 전환선",
+     "value": 27104.089162611846,
+     "meaning": "초과 시 상승 상태",
+     "note": null
+    },
+    {
+     "label": "하락 전환선",
+     "value": 25873.424918799465,
+     "meaning": "미만 시 하락 상태",
+     "note": null
+    },
+    {
+     "label": "낙폭 한도선",
+     "value": 27477.53421875,
+     "meaning": "이상이어야 3배 가능",
+     "note": null
+    },
+    {
+     "label": "VIX7 상한",
+     "value": 29,
+     "meaning": "미만이어야 3배 가능",
+     "note": "다음 VIX 종가가 111.83 이상이면 VIX7이 29 이상이 된다."
+    },
+    {
+     "label": "VIX7 하한",
+     "value": 17,
+     "meaning": "하락 상태에서 미만이어야 혼합 배분",
+     "note": "다음 VIX 종가가 27.83 이상이면 VIX7이 17 이상이 된다."
+    }
+   ],
+   "params": {
+    "ma": 241,
+    "band_up": -0.005,
+    "band_down": -0.05,
+    "vix_floor": 17,
+    "vix_cap": 29,
+    "dd_limit": -0.12,
+    "vwin": 7,
+    "confirm": 4,
+    "vix_label": "VIX7",
+    "ma_label": "241일선"
+   },
+   "backtest_nasdaq100_smoothed": {
+    "cagr": 0.3519,
+    "mdd": -0.69,
+    "mdd_p10": -0.758,
+    "sharpe": 0.78,
+    "sortino": 1.11,
+    "calmar": 0.51,
+    "ulcer": 32.5
+   }
+  },
+  "hestia": {
+   "name": "hestia 2.0",
+   "summary": "안정감을 위해 수익을 양보",
+   "warning": null,
+   "judged": true,
+   "problems": [],
+   "settled_allocation": "TQQQ 100%",
+   "held_allocation": "TQQQ 100%",
+   "trade_next_session": null,
+   "signal": {
+    "trend": "상승",
+    "stability": "안정",
+    "allocation": "TQQQ 100%",
+    "streak": 120,
+    "confirm_days": 4
+   },
+   "indicators": {
+    "ndx_close": 30883.150390625,
+    "rel_to_ma": 0.13808035238393868,
+    "ma_days": 251,
+    "vix_avg": 15.545833428700766,
+    "vix_window": 12,
+    "dd52": -0.010931180090935522
+   },
+   "next_close_thresholds": [
+    {
+     "label": "상승 전환선",
+     "value": 27147.8351953125,
+     "meaning": "초과 시 상승 상태",
+     "note": null
+    },
+    {
+     "label": "하락 전환선",
+     "value": 26057.752547092463,
+     "meaning": "미만 시 하락 상태",
+     "note": null
+    },
+    {
+     "label": "낙폭 한도선",
+     "value": 26540.80009765625,
+     "meaning": "이상이어야 3배 가능",
+     "note": null
+    },
+    {
+     "label": "VIX12 상한",
+     "value": 20,
+     "meaning": "미만이어야 3배 가능",
+     "note": "다음 VIX 종가가 69.12 이상이면 VIX12이 20 이상이 된다."
+    },
+    {
+     "label": "VIX12 하한",
+     "value": 17,
+     "meaning": "하락 상태에서 미만이어야 혼합 배분",
+     "note": "다음 VIX 종가가 33.12 이상이면 VIX12이 17 이상이 된다."
+    }
+   ],
+   "params": {
+    "ma": 251,
+    "band_up": 0.0,
+    "band_down": -0.04,
+    "vix_floor": 17,
+    "vix_cap": 20,
+    "dd_limit": -0.15,
+    "vwin": 12,
+    "confirm": 4,
+    "vix_label": "VIX12",
+    "ma_label": "251일선"
+   },
+   "backtest_nasdaq100_smoothed": {
+    "cagr": 0.2861,
+    "mdd": -0.564,
+    "mdd_p10": -0.726,
+    "sharpe": 0.72,
+    "sortino": 1.02,
+    "calmar": 0.51,
+    "ulcer": 27.2
+   }
+  },
+  "icarus": {
+   "name": "icarus 1.0",
+   "summary": "장기 상승시 최고 수익률",
+   "warning": "횡보장에서는 좋지 않은 전략입니다.",
+   "judged": true,
+   "problems": [],
+   "settled_allocation": "TQQQ 100%",
+   "held_allocation": "TQQQ 100%",
+   "trade_next_session": null,
+   "signal": {
+    "trend": "상승",
+    "stability": "안정",
+    "allocation": "TQQQ 100%",
+    "streak": 545,
+    "confirm_days": 4
+   },
+   "indicators": {
+    "ndx_close": 30883.150390625,
+    "rel_to_ma": 0.13808035238393868,
+    "ma_days": 251,
+    "vix_avg": 15.487500071525574,
+    "vix_window": 8,
+    "dd52": -0.010931180090935522
+   },
+   "next_close_thresholds": [
+    {
+     "label": "상승 전환선",
+     "value": 27284.120053690134,
+     "meaning": "초과 시 상승 상태",
+     "note": null
+    },
+    {
+     "label": "하락 전환선",
+     "value": 22789.59622248011,
+     "meaning": "미만 시 하락 상태",
+     "note": null
+    },
+    {
+     "label": "낙폭 한도선",
+     "value": 27477.53421875,
+     "meaning": "이상이어야 3배 가능",
+     "note": null
+    },
+    {
+     "label": "VIX8 상한",
+     "value": 28,
+     "meaning": "미만이어야 3배 가능",
+     "note": "다음 VIX 종가가 116.44 이상이면 VIX8이 28 이상이 된다."
+    },
+    {
+     "label": "VIX8 하한",
+     "value": 10,
+     "meaning": "하락 상태에서 미만이어야 혼합 배분",
+     "note": "다음 VIX 종가가 어떤 값이어도 VIX8은 10 이상이다."
+    }
+   ],
+   "params": {
+    "ma": 251,
+    "band_up": 0.005,
+    "band_down": -0.16,
+    "vix_floor": 10,
+    "vix_cap": 28,
+    "dd_limit": -0.12,
+    "vwin": 8,
+    "confirm": 4,
+    "vix_label": "VIX8",
+    "ma_label": "251일선"
+   },
+   "backtest_nasdaq100_smoothed": {
+    "cagr": 0.372,
+    "mdd": -0.75,
+    "mdd_p10": -0.832,
+    "sharpe": 0.8,
+    "sortino": 1.14,
+    "calmar": 0.5,
+    "ulcer": 33.4
+   }
+  },
+  "song": {
+   "name": "song 1.0",
+   "summary": "송팀장 원안",
+   "warning": null,
+   "judged": true,
+   "problems": [],
+   "settled_allocation": "TQQQ 100%",
+   "held_allocation": "TQQQ 100%",
+   "trade_next_session": null,
+   "signal": {
+    "trend": "상승",
+    "stability": "안정",
+    "allocation": "TQQQ 100%",
+    "streak": 51,
+    "confirm_days": 1
+   },
+   "indicators": {
+    "ndx_close": 30883.150390625,
+    "rel_to_ma": 0.13759164104390398,
+    "ma_days": 250,
+    "vix_avg": 15.601000118255616,
+    "vix_window": 10,
+    "dd52": -0.010931180090935522
+   },
+   "next_close_thresholds": [
+    {
+     "label": "상승 전환선",
+     "value": 27430.140304094166,
+     "meaning": "초과 시 상승 상태",
+     "note": null
+    },
+    {
+     "label": "하락 전환선",
+     "value": 25794.411248290373,
+     "meaning": "미만 시 하락 상태",
+     "note": null
+    },
+    {
+     "label": "낙폭 한도선",
+     "value": 28414.26833984375,
+     "meaning": "이상이어야 3배 가능",
+     "note": null
+    },
+    {
+     "label": "VIX10 상한",
+     "value": 28,
+     "meaning": "미만이어야 3배 가능",
+     "note": "다음 VIX 종가가 140.06 이상이면 VIX10이 28 이상이 된다."
+    },
+    {
+     "label": "VIX10 하한",
+     "value": 18,
+     "meaning": "하락 상태에서 미만이어야 혼합 배분",
+     "note": "다음 VIX 종가가 40.06 이상이면 VIX10이 18 이상이 된다."
+    }
+   ],
+   "params": {
+    "ma": 250,
+    "band_up": 0.01,
+    "band_down": -0.05,
+    "vix_floor": 18,
+    "vix_cap": 28,
+    "dd_limit": -0.09,
+    "vwin": 10,
+    "confirm": 1,
+    "vix_label": "VIX10",
+    "ma_label": "250일선"
+   },
+   "backtest_nasdaq100_smoothed": {
+    "cagr": 0.3013,
+    "mdd": -0.646,
+    "mdd_p10": -0.703,
+    "sharpe": 0.72,
+    "sortino": 1.02,
+    "calmar": 0.47,
+    "ulcer": 32.0
+   }
+  }
+ }
+}

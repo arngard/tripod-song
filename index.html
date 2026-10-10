@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>트라이팟 송</title>
+<meta name="description" content="트라이팟 송 일별 판정. 2026-10-09 16:00 종가 기준 phrixus 1.0 확정 배분 TQQQ 100%. 매수, 매도 권유가 아님.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="alternate" type="application/json" href="state.json" title="플레이버별 현재 판정 요약">
+<link rel="alternate" type="text/plain" href="llms.txt" title="AI용 안내">
+<link rel="stylesheet" href="styles.css?v=c36e631fba">
+</head>
+<body data-static="tripod.json" data-static-comparison="comparison.json">
+<nav class="tabs">
+  <button type="button" class="tab on" data-view="tripod">트라이팟 송</button>
+  <button type="button" class="tab" data-view="comparison">트라이팟 플레이버 비교</button>
+</nav>
+<noscript><section class="tripod sitenote"><p>트라이팟 송 판정 요약. 생성 2026-10-11 07:55:30 KST, 직전 종가 2026-10-09 16:00 ET (KST 2026-10-10 05:00), 다음 종가 2026-10-12 16:00 ET. 기본 플레이버는 phrixus.</p><p>phrixus 1.0 (추세를 불문하고 준수한 수익률): 확정 배분 TQQQ 100%. 신호는 추세 상승, 안정성 안정, 배분 TQQQ 100%, 신호 일수 4/4. 지표: 나스닥100 30,883, 241일선 대비 +13.40%, VIX7 15.37, 52주 낙폭 -1.09%. 다음 종가 임계값: 상승 전환선 27,104.09 (초과 시 상승 상태); 하락 전환선 25,873.42 (미만 시 하락 상태); 낙폭 한도선 27,477.53 (이상이어야 3배 가능); VIX7 상한 29.00 (미만이어야 3배 가능); VIX7 하한 17.00 (하락 상태에서 미만이어야 혼합 배분).</p><p>hestia 2.0 (안정감을 위해 수익을 양보): 확정 배분 TQQQ 100%. 신호는 추세 상승, 안정성 안정, 배분 TQQQ 100%, 신호 일수 4/4. 지표: 나스닥100 30,883, 251일선 대비 +13.81%, VIX12 15.55, 52주 낙폭 -1.09%. 다음 종가 임계값: 상승 전환선 27,147.84 (초과 시 상승 상태); 하락 전환선 26,057.75 (미만 시 하락 상태); 낙폭 한도선 26,540.80 (이상이어야 3배 가능); VIX12 상한 20.00 (미만이어야 3배 가능); VIX12 하한 17.00 (하락 상태에서 미만이어야 혼합 배분).</p><p>icarus 1.0 (장기 상승시 최고 수익률): 확정 배분 TQQQ 100%. 신호는 추세 상승, 안정성 안정, 배분 TQQQ 100%, 신호 일수 4/4. 지표: 나스닥100 30,883, 251일선 대비 +13.81%, VIX8 15.49, 52주 낙폭 -1.09%. 다음 종가 임계값: 상승 전환선 27,284.12 (초과 시 상승 상태); 하락 전환선 22,789.60 (미만 시 하락 상태); 낙폭 한도선 27,477.53 (이상이어야 3배 가능); VIX8 상한 28.00 (미만이어야 3배 가능); VIX8 하한 10.00 (하락 상태에서 미만이어야 혼합 배분). 경고: 횡보장에서는 좋지 않은 전략입니다.</p><p>song 1.0 (송팀장 원안): 확정 배분 TQQQ 100%. 신호는 추세 상승, 안정성 안정, 배분 TQQQ 100%, 신호 일수 1/1. 지표: 나스닥100 30,883, 250일선 대비 +13.76%, VIX10 15.60, 52주 낙폭 -1.09%. 다음 종가 임계값: 상승 전환선 27,430.14 (초과 시 상승 상태); 하락 전환선 25,794.41 (미만 시 하락 상태); 낙폭 한도선 28,414.27 (이상이어야 3배 가능); VIX10 상한 28.00 (미만이어야 3배 가능); VIX10 하한 18.00 (하락 상태에서 미만이어야 혼합 배분).</p><p>이 페이지는 한 개인이 규칙 기반 전략을 시험하며 매일 기계적으로 계산해 공개하는 판정 기록이다. 매수, 매도 권유가 아니며, 투자 판단과 그 결과의 책임은 각자에게 있다. 백테스트 지표와 트라이팟 플레이버 비교 탭의 수치는 지수 종가로 합성한 과거 한 경로의 계산값이고, 판정에는 자료 오류나 지연이 있을 수 있다. 자료: Yahoo Finance, FRED.</p></section></noscript>
+<div class="tripod" data-view="tripod">
+  <header class="th">
+    <h1>트라이팟 송</h1>
+    <button id="tRefresh" type="button" class="mini">새로고침</button>
+    <!-- 항목 하나가 한 덩어리다. 폭이 모자라면 덩어리째 다음 줄로 넘어간다. -->
+    <p class="stamp">
+      <span class="seg">생성 <span id="tGenerated" class="v">-</span></span>
+      <span class="seg">직전 종가 <span id="tBasis" class="v">-</span></span>
+      <span class="seg">다음 종가 <span id="tNext" class="v">-</span></span>
+    </p>
+  </header>
+
+  <!-- 전략 선택. 고른 플레이버에 따라 아래 판정, 분기, 차트, 내역이 모두 바뀐다.
+       목록과 설명은 서버(tripod/flavor.py)가 보낸다. -->
+  <section class="tpanel strategy">
+    <h2>전략</h2>
+    <div class="pick">
+      <label for="tStrategy">플레이버</label>
+      <select id="tStrategy" disabled></select>
+      <!-- 경고는 드롭다운 바로 오른쪽에 둔다. -->
+      <span id="tStratWarn" class="swarn" hidden></span>
+    </div>
+    <dl id="tStratParams" class="sdesc"></dl>
+    <dl id="tStratMetrics" class="sdesc"></dl>
+  </section>
+
+  <section id="tProblems" class="problems" hidden>
+    <h2>판정하지 않았다</h2>
+    <ul id="tProblemList"></ul>
+    <p class="note">신호 없음이 틀린 신호보다 낫다. 직전 종가의 판정과 다음 종가의 분기는 내지 않는다. 차트와 전환 이력은 받은 자료 그대로이며 위 사유를 감안해 읽는다.</p>
+  </section>
+
+  <p id="tNotes" class="note" hidden></p>
+
+  <section class="tpanel">
+    <h2>현재 상태</h2>
+    <div id="tNow" class="now">
+      <!-- 확정, 신호, 행동 순서다. 지금 들고 있어야 할 것(확정)이 맨 위다. 체결을 내는 날은
+           신호와 확정이 같으므로 행동이 바로 위 신호와 어긋나 보이지 않는다.
+           신호 묶음은 판정, 입력(지표), 풀이(해설) 세 줄이다. -->
+      <div class="grp settled"><h3>확정</h3><dl>
+        <div><dt>추세</dt><dd id="tSettledState">-</dd></div>
+        <div><dt>안정성</dt><dd id="tSettledStab">-</dd></div>
+        <div><dt>배분</dt><dd id="tSettled">-</dd></div>
+      </dl></div>
+      <div class="grp"><h3>신호</h3><div class="lines">
+        <dl>
+          <div><dt>추세</dt><dd id="tState">-</dd></div>
+          <div><dt>안정성</dt><dd id="tStab">-</dd></div>
+          <div><dt>배분</dt><dd id="tTarget">-</dd></div>
+          <div><dt>일수</dt><dd id="tStreak" class="mono">-</dd></div>
+        </dl>
+        <dl>
+          <div><dt>직전 NDX 종가</dt><dd id="bNdx" class="mono">-</dd></div>
+          <div><dt><span data-lbl="ma">이동평균</span> 대비</dt><dd id="bRel" class="mono">-</dd></div>
+          <div><dt data-lbl="vix">VIX 평균</dt><dd id="bVix10" class="mono">-</dd></div>
+          <div><dt>52주 낙폭</dt><dd id="bDd" class="mono">-</dd></div>
+        </dl>
+        <dl>
+          <div><dt>해설</dt><dd id="bReason">-</dd></div>
+        </dl>
+      </div></div>
+      <div class="grp act"><h3>행동</h3><dl>
+        <div><dd id="tAction">-</dd></div>
+      </dl></div>
+    </div>
+  </section>
+
+  <section class="tpanel">
+    <h2>다음 종가에서의 분기</h2>
+    <p class="note">왼쪽부터 순서대로 판정한다. 다음 종가의 추세를 보고, 그 안에서 안정성을 판정하면, 배분을 알 수 있다. 장중에 선을 넘었다가 되돌아온 경우는 무시한다. 강조된 행은 직전 종가에서의 상태이다. 값은 직전 종가를 기준으로 미리 쓴 것이다.</p>
+    <div id="tTree" class="tree"></div>
+  </section>
+
+  <section class="tpanel">
+    <h2>시장 상황</h2>
+    <p class="note">선은 그날 종가를 포함해 계산한 것이라 위 '다음 종가에서의 분기'와 하루 어긋난다.</p>
+    <div class="ranges" id="tChartRange">
+      <button data-n="126">6달</button>
+      <button data-n="252">1년</button>
+      <button data-n="504">2년</button>
+      <button data-n="1260">5년</button>
+      <button data-n="2520">10년</button>
+    </div>
+    <div class="chartbox"><div id="tChartPrice" class="chart tall"></div><div id="tLegendPrice" class="legend"></div></div>
+    <p class="note vixnote">아래는 VIX <span data-lbl="vwin">-</span>일 평균이다. 판정에는 이 값만 쓰고 당일 VIX 종가는 쓰지 않는다.</p>
+    <div class="chartbox"><div id="tChartVix" class="chart short"></div><div id="tLegendVix" class="legend"></div></div>
+  </section>
+
+  <section class="tpanel">
+    <!-- 목록이 전부로 읽히지 않게 개수를 제목에 밝힌다 (`@arngard` 2026-10-05). 개수는 받은 줄 수로 채운다. -->
+    <h2>배분 변경 내역 (최근 <span id="tSwCount">24</span>개)</h2>
+    <div class="swlist">
+      <div class="swhead" aria-hidden="true">
+        <span>확정일</span><span>전환</span><span>추세</span><span>안정성</span>
+        <span class="num"><span data-lbl="ma">이동평균</span> 대비</span><span class="num" data-lbl="vix">VIX 평균</span><span class="num">52주 낙폭</span><span>해설</span>
+      </div>
+      <div id="tSw"></div>
+    </div>
+  </section>
+
+</div>
+<div class="comparison" data-view="comparison" hidden>
+  <header class="th">
+    <h1>트라이팟 플레이버 비교</h1>
+    <p class="stamp" id="eStamp"></p>
+  </header>
+  <p class="note lede">나스닥100 종가에 1억 원을 넣었다고 가정하고, 트라이팟 플레이버 넷과 QQQ, TQQQ 단순 보유를 같은 세금 가정으로 견준다. 값은 모두 그날의 원화 평가금(보유 주식과 예비금, 세무 유보금 제외)을 1억 원으로 나눈 배수다. 매도로 생긴 양도세는 세무 유보금으로 떼어 두고 이 값에서 뺀다. 유보금으로는 사지 않고 이자도 붙지 않는다. 범례 항목을 누르면 그 계열을 켜고 끈다.</p>
+  <p class="note" id="eStatus"></p>
+  <section id="eProblems" class="problems" hidden></section>
+
+  <div id="eBody" hidden>
+    <section class="tpanel">
+      <h2>고점 진입 분포</h2>
+      <p class="note" id="eDistIntro"></p>
+      <div class="pickrow"><span class="lbl">80% 범위</span><div class="ranges" id="eBand"></div></div>
+      <div class="chartbox"><div id="eDistChart" class="chart"></div><div id="eDistLegend" class="legend"></div></div>
+      <p class="note" id="eDistCaveat"></p>
+      <div class="wide" id="eDistTable"></div>
+      <p class="note small">칸마다 위는 중심값, 아래는 80% 범위와 원금 손실 확률이다. 모두 로그정규 적합값이며, 행마다 중심값이 가장 큰 칸을 밝게 둔다.</p>
+    </section>
+
+    <section class="tpanel">
+      <h2>진입일 탐색</h2>
+      <p class="note">차트를 좌우로 끌면 보이는 구간의 왼쪽 끝 날짜가 진입일이 되고, 여섯 계열을 그 자리에서 처음부터 다시 계산한다. 평가금은 진입일에 따라 취득가와 해마다의 공제, 납부 시점이 모두 달라지므로 그려 둔 경로를 나눠서는 얻을 수 없다. 트랙패드로 좌우로 쓸거나 Shift를 누른 채 휠을 굴려도 옮겨진다. 보는 기간은 기간 버튼으로 정한다. 세로축은 0.01배 밑을 자른다.</p>
+      <div class="pickrow"><span class="lbl">고점으로 이동</span><div class="ranges" id="eJump"></div></div>
+      <dl class="emeta" id="eExMeta"></dl>
+      <div class="ranges" id="eSpan"></div>
+      <div class="chartbox"><div id="eExChart" class="chart tall"></div><div id="eExLegend" class="legend"></div></div>
+      <!-- 시간 창. 1990년 이후 나스닥100 전체 위에 지금 보는 구간을 상자로 보인다. 누르거나 끌면 그 자리로 옮긴다. -->
+      <div class="strip" id="eStrip" aria-hidden="true"></div>
+      <input type="range" id="eEntry" class="entryrange" min="0" max="1" value="0" aria-label="진입일">
+      <p class="note small" id="eExCaption"></p>
+      <div class="wide" id="eExTable"></div>
+    </section>
+
+    <section class="tpanel">
+      <h2>가정과 한계</h2>
+      <ul class="note assume">
+        <li>플레이버의 날짜별 배분은 트라이팟 송 탭과 같은 판정이며, 배분이 바뀌면 다음 거래일 종가에 사고판다.</li>
+        <li>세금은 한국 거주 개인 기준이다. 해외주식 양도세 22%를 연 250만 원 공제 뒤 원화 손익에 매긴다. 매도할 때마다 그해 예상 세액이 늘어난 만큼 세무 유보금으로 떼어 두었다가 이듬해 5월에 낸다. 배당 원천징수 15%, 현금 이자 15.4%. 현행 세제를 1990년부터 내내 적용했다고 가정한다.</li>
+        <li>플레이버는 배분을 바꿀 때마다 세금을 내고 QQQ, TQQQ 보유는 팔 때 한 번 낸다. 평가금은 아직 팔지 않은 이익의 세금을 빼지 않으므로 세금을 미루는 보유 쪽에 유리하게 기운다. 그 크기는 진입일 탐색 표의 "지금 팔면 더 낼 세금"과 "전부 팔았을 때 세후"로 본다.</li>
+        <li>상품 수익은 나스닥100 가격지수에 배당 0.6%를 더해 합성했다. QLD, TQQQ 상장 이전 구간도 같다. 빌린 돈에 단기금리 + 0.40%, 운용보수(QQQ 0.20%, QLD 0.95%, TQQQ 0.91%), 매매마다 0.05%를 물린다. 원/달러 환율은 FRED 기준율이다.</li>
+        <li>플레이버 파라미터는 이 같은 1990년 이후 나스닥100 경로에서 고른 값이라, 여기 나온 성과는 표본 안의 성과다. 앞으로의 기대치는 이보다 낮게 보아야 한다.</li>
+        <li>과거 경로를 계산한 결과이며 매수나 매도를 권하지 않는다.</li>
+      </ul>
+      <p class="note small" id="eNotes"></p>
+    </section>
+  </div>
+</div>
+<footer class="tripod sitenote"><p class="note">이 페이지는 한 개인이 규칙 기반 전략을 시험하며 매일 기계적으로 계산해 공개하는 판정 기록이다. 매수, 매도 권유가 아니며, 투자 판단과 그 결과의 책임은 각자에게 있다. 백테스트 지표와 트라이팟 플레이버 비교 탭의 수치는 지수 종가로 합성한 과거 한 경로의 계산값이고, 판정에는 자료 오류나 지연이 있을 수 있다. 자료: Yahoo Finance, FRED.</p></footer>
+<script src="https://cdn.jsdelivr.net/npm/lightweight-charts@5.2.1/dist/lightweight-charts.standalone.production.js"
+  integrity="sha384-KkYqTZlM13Zya6fVUF3IGCBOQ1ehFeJVVgxaVvD/0MebineF9EI8Jkd3NnWNChqN"
+  crossorigin="anonymous"></script>
+<script src="chartkit.js?v=1184db306e"></script>
+<script src="tripod.js?v=c9d5382185"></script>
+<script src="comparison.js?v=7d29f9e0c8"></script>
+</body>
+</html>
