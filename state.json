@@ -1,0 +1,495 @@
+{
+ "site": "https://arngard.github.io/tripod-song/",
+ "notice": "이 페이지는 아릉이 규칙 기반 전략을 연구하며 매일 기계적으로 계산해 공개하는 연구 결과다. 판정과 행동 문장은 그 규칙이 내는 계산 결과이며 투자 권유가 아니다. 이를 참고해 매매하는 행위와 그 결과의 책임은 매매하는 본인에게 있다. 백테스트 지표와 테스트 탭의 수치는 지수 종가로 합성한 과거 주가로 계산한 값이다. 닛케이 테스트 탭의 주가는 나스닥100이 닛케이225처럼 움직였다고 가정한 가상의 주가다. 판정에는 자료 오류나 지연이 있을 수 있다. 자료: Yahoo Finance, FRED.",
+ "generated_at_kst": "2026-10-23 16:15:00",
+ "last_close": {
+  "day": "2026-10-22",
+  "et": "2026-10-22 16:00",
+  "kst": "2026-10-23 05:00",
+  "early": false,
+  "trading": true
+ },
+ "next_close": {
+  "day": "2026-10-23",
+  "et": "2026-10-23 16:00",
+  "kst": "2026-10-24 05:00",
+  "early": false,
+  "trading": true
+ },
+ "default_flavor": "persephone",
+ "flavors": {
+  "persephone": {
+   "name": "persephone 5.5",
+   "summary": "Lv4 장세 대응형 최고 수익률",
+   "warning": null,
+   "judged": true,
+   "problems": [],
+   "settled": {
+    "season": "가을",
+    "stability": "조심",
+    "allocation": "QQQ 100%"
+   },
+   "action": "QQQ 100%를 보유한다.",
+   "indicators": {
+    "ndx_close": 28958.689453125,
+    "rel_to_ma": 0.04094930859564938,
+    "ma_days": 200,
+    "vix_avg": 15.942682987306176,
+    "vix_window": 41,
+    "dd52": -0.07256428048188612
+   },
+   "next_close_thresholds": [
+    {
+     "label": "상승 전환선",
+     "value": 26012.911020789776,
+     "meaning": "초과 시 상승 상태",
+     "note": null
+    },
+    {
+     "label": "하락 전환선",
+     "value": 23638.007588403056,
+     "meaning": "미만 시 하락 상태",
+     "note": null
+    },
+    {
+     "label": "낙폭 한도선",
+     "value": 25291.82126953125,
+     "meaning": "이상이어야 TQQQ 100% 가능",
+     "note": null
+    },
+    {
+     "label": "VIX41 조심선",
+     "value": 55,
+     "meaning": "상승 상태에서 미만이면 안정(TQQQ 100%), 이상이면 조심",
+     "note": "다음 VIX 종가가 1616.56 이상이면 VIX41이 55 이상이 된다."
+    },
+    {
+     "label": "VIX41 부활선",
+     "value": 8,
+     "meaning": "하락 상태에서 미만이면 부활(QQQ 50% + QLD 50%), 이상이면 불안정",
+     "note": "다음 VIX 종가가 어떤 값이어도 VIX41은 8 이상이다."
+    }
+   ],
+   "params": {
+    "ma": 200,
+    "band_up": -0.065,
+    "band_down": -0.15,
+    "vix_floor": 8,
+    "vix_cap": 55,
+    "dd_limit": -0.19,
+    "vwin": 41,
+    "confirm": 20,
+    "up_unstable": "QQQ 100%",
+    "vix_label": "VIX41",
+    "ma_label": "200일선"
+   },
+   "backtest_nasdaq100_smoothed": {
+    "growth": 0.4116,
+    "mdd": -0.699,
+    "mdd_p10": -0.698,
+    "sharpe": 0.84,
+    "sortino": 1.22,
+    "calmar": 0.59,
+    "ulcer": 23.9,
+    "wnh90": 2.4,
+    "ntg": 0.2384,
+    "dsg": 0.0
+   },
+   "composite": {
+    "up": {
+     "ma": 200,
+     "band_up": -0.065,
+     "band_down": -0.15,
+     "vix_floor": 8,
+     "vix_cap": 55,
+     "dd_limit": -0.19,
+     "vwin": 41,
+     "confirm": 20,
+     "up_unstable": "QQQ 100%",
+     "vix_label": "VIX41",
+     "ma_label": "200일선"
+    },
+    "down": {
+     "ma": 170,
+     "band_up": 0.055,
+     "band_down": -0.01,
+     "vix_floor": 17,
+     "vix_cap": 51,
+     "dd_limit": -0.37,
+     "vwin": 4,
+     "confirm": 16,
+     "up_unstable": "QQQ 100%",
+     "vix_label": "VIX4",
+     "ma_label": "170일선"
+    },
+    "up_name": "봄 파라미터",
+    "down_name": "겨울 파라미터",
+    "ma": 280,
+    "lookback": 70,
+    "autumn": {
+     "stress_z": 1.25,
+     "dd": 0.4,
+     "trig_rate": 0.625,
+     "shock": 3.75,
+     "span": 336,
+     "confirm": 7,
+     "min_days": 2520,
+     "anchor": "1990-01-02"
+    }
+   },
+   "mode": {
+    "up": true,
+    "label": "봄",
+    "stance": "가을",
+    "up_name": "봄 파라미터",
+    "down_name": "겨울 파라미터",
+    "ma": 280,
+    "lookback": 70,
+    "slope": 0.06532565919298072,
+    "line": -432848.123046875,
+    "up_vwin": 41,
+    "down_vwin": 4,
+    "autumn": {
+     "on": true,
+     "applied": true,
+     "cond": true,
+     "shock": false,
+     "stressed": true,
+     "trigger": true,
+     "z": 2.050568512765641,
+     "rate": 5.13,
+     "rate_change": 0.75,
+     "dd52": -0.07256428048188612,
+     "spec": {
+      "stress_z": 1.25,
+      "dd": 0.4,
+      "trig_rate": 0.625,
+      "shock": 3.75,
+      "span": 336,
+      "confirm": 7
+     }
+    }
+   }
+  },
+  "phrixus": {
+   "name": "phrixus 3.1",
+   "summary": "Lv2 장세를 불문하고 준수한 수익률",
+   "warning": null,
+   "judged": true,
+   "problems": [],
+   "settled": {
+    "season": null,
+    "stability": "안정",
+    "allocation": "TQQQ 100%"
+   },
+   "action": "TQQQ 100%를 보유한다.",
+   "indicators": {
+    "ndx_close": 28958.689453125,
+    "rel_to_ma": 0.049244270815638425,
+    "ma_days": 220,
+    "vix_avg": 17.855000495910645,
+    "vix_window": 2,
+    "dd52": -0.07256428048188612
+   },
+   "next_close_thresholds": [
+    {
+     "label": "상승 전환선",
+     "value": 29411.85834502285,
+     "meaning": "초과 시 상승 상태",
+     "note": null
+    },
+    {
+     "label": "하락 전환선",
+     "value": 24005.2076613162,
+     "meaning": "미만 시 하락 상태",
+     "note": null
+    },
+    {
+     "label": "낙폭 한도선",
+     "value": 26540.80009765625,
+     "meaning": "이상이어야 TQQQ 100% 가능",
+     "note": null
+    },
+    {
+     "label": "VIX2 조심선",
+     "value": 58,
+     "meaning": "상승 상태에서 미만이면 안정(TQQQ 100%), 이상이면 조심",
+     "note": "다음 VIX 종가가 96.97 이상이면 VIX2가 58 이상이 된다."
+    },
+    {
+     "label": "VIX2 부활선",
+     "value": 13,
+     "meaning": "하락 상태에서 미만이면 부활(QQQ 50% + QLD 50%), 이상이면 불안정",
+     "note": "다음 VIX 종가가 6.97 미만이면 VIX2가 13 미만이 된다."
+    }
+   ],
+   "params": {
+    "ma": 220,
+    "band_up": 0.065,
+    "band_down": -0.13,
+    "vix_floor": 13,
+    "vix_cap": 58,
+    "dd_limit": -0.15,
+    "vwin": 2,
+    "confirm": 12,
+    "up_unstable": "QQQ 100%",
+    "vix_label": "VIX2",
+    "ma_label": "220일선"
+   },
+   "backtest_nasdaq100_smoothed": {
+    "growth": 0.3159,
+    "mdd": -0.787,
+    "mdd_p10": -0.848,
+    "sharpe": 0.72,
+    "sortino": 1.03,
+    "calmar": 0.4,
+    "ulcer": 38.4,
+    "wnh90": 5.7,
+    "ntg": 0.195,
+    "dsg": 0.0
+   },
+   "composite": null,
+   "mode": null
+  },
+  "amphion": {
+   "name": "amphion 3.1",
+   "summary": "Lv2 안정감을 위해 수익을 양보",
+   "warning": null,
+   "judged": true,
+   "problems": [],
+   "settled": {
+    "season": null,
+    "stability": "안정",
+    "allocation": "TQQQ 100%"
+   },
+   "action": "TQQQ 100%를 보유한다.",
+   "indicators": {
+    "ndx_close": 28958.689453125,
+    "rel_to_ma": 0.06703798481530865,
+    "ma_days": 270,
+    "vix_avg": 17.25111124250624,
+    "vix_window": 9,
+    "dd52": -0.07256428048188612
+   },
+   "next_close_thresholds": [
+    {
+     "label": "상승 전환선",
+     "value": 26604.16074562881,
+     "meaning": "초과 시 상승 상태",
+     "note": null
+    },
+    {
+     "label": "하락 전환선",
+     "value": 26604.16074562881,
+     "meaning": "미만 시 하락 상태",
+     "note": null
+    },
+    {
+     "label": "낙폭 한도선",
+     "value": 28102.0236328125,
+     "meaning": "이상이어야 TQQQ 100% 가능",
+     "note": null
+    },
+    {
+     "label": "VIX9 조심선",
+     "value": 24,
+     "meaning": "상승 상태에서 미만이면 안정(TQQQ 100%), 이상이면 조심",
+     "note": "다음 VIX 종가가 75.95 이상이면 VIX9가 24 이상이 된다."
+    },
+    {
+     "label": "VIX9 부활선",
+     "value": 16,
+     "meaning": "하락 상태에서 미만이면 부활(QQQ 50% + QLD 50%), 이상이면 불안정",
+     "note": "다음 VIX 종가가 3.95 미만이면 VIX9가 16 미만이 된다."
+    }
+   ],
+   "params": {
+    "ma": 270,
+    "band_up": -0.02,
+    "band_down": -0.02,
+    "vix_floor": 16,
+    "vix_cap": 24,
+    "dd_limit": -0.1,
+    "vwin": 9,
+    "confirm": 4,
+    "up_unstable": "QQQ 50% + QLD 50%",
+    "vix_label": "VIX9",
+    "ma_label": "270일선"
+   },
+   "backtest_nasdaq100_smoothed": {
+    "growth": 0.215,
+    "mdd": -0.645,
+    "mdd_p10": -0.683,
+    "sharpe": 0.61,
+    "sortino": 0.86,
+    "calmar": 0.33,
+    "ulcer": 32.7,
+    "wnh90": 9.7,
+    "ntg": 0.1356,
+    "dsg": 0.0
+   },
+   "composite": null,
+   "mode": null
+  },
+  "icarus": {
+   "name": "icarus 3.0",
+   "summary": "Lv2 장기 상승장에서 높은 수익률",
+   "warning": "침체장이나 횡보장에서는 크게 잃을 수 있다.",
+   "judged": true,
+   "problems": [],
+   "settled": {
+    "season": null,
+    "stability": "안정",
+    "allocation": "TQQQ 100%"
+   },
+   "action": "TQQQ 100%를 보유한다.",
+   "indicators": {
+    "ndx_close": 28958.689453125,
+    "rel_to_ma": -0.019565620208851997,
+    "ma_days": 120,
+    "vix_avg": 17.506250143051147,
+    "vix_window": 8,
+    "dd52": -0.07256428048188612
+   },
+   "next_close_thresholds": [
+    {
+     "label": "상승 전환선",
+     "value": 30297.605371894042,
+     "meaning": "초과 시 상승 상태",
+     "note": null
+    },
+    {
+     "label": "하락 전환선",
+     "value": 23602.275980494967,
+     "meaning": "미만 시 하락 상태",
+     "note": null
+    },
+    {
+     "label": "낙폭 한도선",
+     "value": 27477.53421875,
+     "meaning": "이상이어야 TQQQ 100% 가능",
+     "note": null
+    },
+    {
+     "label": "VIX8 조심선",
+     "value": 59,
+     "meaning": "상승 상태에서 미만이면 안정(TQQQ 100%), 이상이면 조심",
+     "note": "다음 VIX 종가가 347.22 이상이면 VIX8이 59 이상이 된다."
+    },
+    {
+     "label": "VIX8 부활선",
+     "value": 11,
+     "meaning": "하락 상태에서 미만이면 부활(QQQ 50% + QLD 50%), 이상이면 불안정",
+     "note": "다음 VIX 종가가 어떤 값이어도 VIX8은 11 이상이다."
+    }
+   ],
+   "params": {
+    "ma": 120,
+    "band_up": 0.025,
+    "band_down": -0.2,
+    "vix_floor": 11,
+    "vix_cap": 59,
+    "dd_limit": -0.12,
+    "vwin": 8,
+    "confirm": 3,
+    "up_unstable": "QQQ 100%",
+    "vix_label": "VIX8",
+    "ma_label": "120일선"
+   },
+   "backtest_nasdaq100_smoothed": {
+    "growth": 0.3404,
+    "mdd": -0.795,
+    "mdd_p10": -0.845,
+    "sharpe": 0.78,
+    "sortino": 1.12,
+    "calmar": 0.43,
+    "ulcer": 37.1,
+    "wnh90": 5.1,
+    "ntg": 0.1822,
+    "dsg": -0.0186
+   },
+   "composite": null,
+   "mode": null
+  },
+  "song": {
+   "name": "song 1.0",
+   "summary": "Lv2 송팀장 원안",
+   "warning": null,
+   "judged": true,
+   "problems": [],
+   "settled": {
+    "season": null,
+    "stability": "안정",
+    "allocation": "TQQQ 100%"
+   },
+   "action": "TQQQ 100%를 보유한다.",
+   "indicators": {
+    "ndx_close": 28958.689453125,
+    "rel_to_ma": 0.059783770870633024,
+    "ma_days": 250,
+    "vix_avg": 17.010000133514403,
+    "vix_window": 10,
+    "dd52": -0.07256428048188612
+   },
+   "next_close_thresholds": [
+    {
+     "label": "상승 전환선",
+     "value": 27607.430366179364,
+     "meaning": "초과 시 상승 상태",
+     "note": null
+    },
+    {
+     "label": "하락 전환선",
+     "value": 25961.129052901022,
+     "meaning": "미만 시 하락 상태",
+     "note": null
+    },
+    {
+     "label": "낙폭 한도선",
+     "value": 28414.26833984375,
+     "meaning": "이상이어야 TQQQ 100% 가능",
+     "note": null
+    },
+    {
+     "label": "VIX10 조심선",
+     "value": 28,
+     "meaning": "상승 상태에서 미만이면 안정(TQQQ 100%), 이상이면 조심",
+     "note": "다음 VIX 종가가 124.74 이상이면 VIX10이 28 이상이 된다."
+    },
+    {
+     "label": "VIX10 부활선",
+     "value": 18,
+     "meaning": "하락 상태에서 미만이면 부활(QQQ 50% + QLD 50%), 이상이면 불안정",
+     "note": "다음 VIX 종가가 24.74 이상이면 VIX10이 18 이상이 된다."
+    }
+   ],
+   "params": {
+    "ma": 250,
+    "band_up": 0.01,
+    "band_down": -0.05,
+    "vix_floor": 18,
+    "vix_cap": 28,
+    "dd_limit": -0.09,
+    "vwin": 10,
+    "confirm": 1,
+    "up_unstable": "QQQ 50% + QLD 50%",
+    "vix_label": "VIX10",
+    "ma_label": "250일선"
+   },
+   "backtest_nasdaq100_smoothed": {
+    "growth": 0.2163,
+    "mdd": -0.664,
+    "mdd_p10": -0.69,
+    "sharpe": 0.62,
+    "sortino": 0.87,
+    "calmar": 0.33,
+    "ulcer": 34.3,
+    "wnh90": 9.2,
+    "ntg": 0.1308,
+    "dsg": 0.0
+   },
+   "composite": null,
+   "mode": null
+  }
+ }
+}

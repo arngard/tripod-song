@@ -1,0 +1,392 @@
+/* 트라이팟 송 사이트의 스타일. 공유 모듈의 base.css 다음에 읽는다(토큰, 입력 요소, 기간 버튼,
+   차트 상자와 범례는 그쪽). 여기는 이 사이트에만 쓰는 규칙이다. */
+
+/* 표의 칸처럼 값 하나를 단독으로 내는 자리. */
+.stamp .v, .swrow .conf, .swrow .num { font-family: var(--mono); }
+
+/* 배분이 바뀐 날의 세로선. 차트 캔버스가 z-index 2를 쓰므로 그보다 위에 얹는다. 색은 인라인으로
+   배분 색을 받는다. */
+.vlines { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 3; }
+.vlines i { position: absolute; top: 0; bottom: 30px; width: 0; border-left: 1px solid var(--ink); opacity: .75; }
+
+/* 시장 사건의 구간 띠(회색)와 기간에 따른 추이의 90% 범위 띠(.under). 차트 캔버스(z-index 1, 2) 밑에 깔아
+   격자와 선이 그 위에 그려지게 하고, 그래서 이 차트들은 캔버스 바탕을 투명하게 두고 상자가 바탕을 칠한다 (`@arngard` 2026-10-22). */
+#tChartPrice, #tChartVix, [data-e="eExChart"], [data-e="eDistChart"] { background: var(--panel); }
+.under { position: absolute; top: 0; left: 0; z-index: 0; pointer-events: none; }
+.evbands { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+/* 태그는 띠와 달리 선과 세로선(z-index 3)보다 위에 띄운다 (`@arngard` 2026-10-22). */
+.evtags { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 4; }
+.evbands b { position: absolute; top: 0; bottom: 30px; background: rgba(255, 255, 255, .13);
+                 border-left: 1px solid var(--rule); border-right: 1px solid var(--rule); }
+.evtags span { position: absolute; transform: translateX(-50%); white-space: nowrap; font-size: 12px; color: var(--ink-soft);
+                background: #313131; border: 1px solid var(--row-rule); border-radius: 10px; padding: 1px 8px; }
+.evtags span:after { content: ""; position: absolute; left: 50%; bottom: -5px; margin-left: -4px;
+                      border: 4px solid transparent; border-top-color: var(--row-rule); border-bottom: 0; }
+
+/* ── 강조 배경 ─────────────────────────────── */
+
+/* 다크 테마임을 브라우저에 알려, 모바일 브라우저의 강제 다크 모드가 색을 다시 바꾸지 않게 한다 (`@arngard` 2026-10-14). */
+:root { color-scheme: dark; }
+
+/* ── 탭 ─────────────────────────────── */
+
+.tabs {
+  display: flex; gap: 2px; background: var(--panel);
+  border-bottom: 1px solid var(--rule); padding: 0 12px;
+  position: sticky; top: 0; z-index: 30; flex: none;
+}
+.tabs .tab {
+  /* 글꼴은 고르지 않고 페이지 기본을 물려받는다. 버튼은 브라우저가 따로 글꼴을 준다. */
+  font: inherit; background: none; border: none; border-bottom: 2px solid transparent;
+  color: var(--ink-soft); font-size: 14px;
+  padding: 11px 18px; cursor: pointer;
+}
+/* 페이지 제목은 탭 줄 왼쪽에 둔다. 세로 공간을 따로 쓰지 않는다 (`@arngard` 2026-10-14). */
+.tabs .brand { font-size: 16px; font-weight: 600; margin: 0 28px 0 6px; align-self: center; flex: none; white-space: nowrap;
+  display: flex; align-items: center; gap: 7px; }
+/* 제목 앞 아이콘은 파비콘과 같은 그림이다 (`@arngard` 2026-10-14). */
+.tabs .brand img { width: 20px; height: 20px; flex: none; }
+.tabs .tab:hover { color: var(--ink); }
+.tabs .tab.on { color: var(--ink); border-bottom-color: var(--line); }
+
+/* ── 현황 ─────────────────────────────── */
+
+.tripod { padding: 22px 26px 40px; }
+/* 모든 구획이 같은 최대 폭을 지킨다. 차트도 예외가 아니다 (`@arngard` 2026-10-05). */
+.tripod > * { max-width: 1330px; }
+/* 머리(시각 표기)와 첫 구획 사이를 띄운다. 그다음이 전략 구획이다 (`@arngard` 2026-10-04). */
+.tripod .th { display: flex; align-items: baseline; gap: 6px 14px; flex-wrap: wrap; margin-bottom: 36px; }
+
+/* 전략 구획. 플레이버 드롭다운 바로 아래에 그 플레이버의 파라미터와 백테스트 지표를 둔다. */
+/* 플레이버, 파라미터, 백테스트는 같은 위계의 줄 머리다. 같은 크기, 굵기, 폭으로 왼쪽 열을 이룬다. */
+.tripod .strategy .pick { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 24px; margin: 10px 0 12px; }
+.tripod .strategy .pick label, .tripod .sdesc .head {
+  font-size: inherit; color: var(--ink); font-weight: 600; flex: none; min-width: 5.5em; }
+.tripod .strategy select { min-width: 23.1em; max-width: 100%; cursor: pointer; }   /* 드롭다운 폭 (`@arngard` 2026-10-12) */
+.tripod .strategy select:disabled { cursor: default; }
+/* 경고는 빨간 글씨로 드롭다운 오른쪽에 둔다. 폭이 모자라면 다음 줄로 넘어간다. */
+.tripod .swarn { color: var(--error); }
+.tripod .swarn[hidden] { display: none; }
+.tripod .sdesc { display: flex; align-items: baseline; gap: 4px 24px; margin: 0 0 10px; }
+.tripod .sdesc .items { display: flex; flex-wrap: wrap; gap: 4px 24px; min-width: 0; }
+.tripod .sdesc .items > div { display: flex; align-items: baseline; gap: 8px; }
+.tripod .sdesc .items > .lead { color: var(--ink-label); }
+.tripod .sdesc [title] { cursor: help; text-decoration: underline dotted var(--line); text-underline-offset: 3px; }
+.tripod .sdesc dt { color: var(--ink-label); white-space: nowrap; }
+.tripod .sdesc dd { margin: 0; }
+.tripod h2 { font-size: 15px; margin: 0 0 10px; color: var(--ink-soft); }
+/* 제목과 첫 내용 사이는 제목의 아래 여백 하나로 정한다. 첫 요소마다 위 여백이 달라 간격이 들쭉날쭉했다 (`@arngard` 2026-10-17). */
+.tripod h2 + *, .tripod h3.tsub + * { margin-top: 0; }
+/* 숨은 알림(#tNotes)이 제목과 첫 내용 사이에 있을 때도 같다. */
+.tripod h2 + [hidden] + * { margin-top: 0; }
+/* 시각 표기는 항목(생성, 직전 종가, 다음 종가) 단위로 줄을 바꾼다. 항목 하나가 화면 폭보다
+   길 때만 그 안에서 바꾸되, 시각 토막(.nw)은 끊지 않는다. */
+.tripod .stamp { margin: 0; color: var(--ink-soft); font-size: var(--fs-small); line-height: 1.6;
+  display: flex; flex-wrap: wrap; gap: 0 22px; }
+.tripod .stamp .nw { white-space: nowrap; }
+/* 사용자의 행동을 요구하는 표시의 색. 콘텐츠의 코랄 빨강(현금, 하락)과 갈리도록 순수한 빨강을 쓴다. 생성된 지
+   23시간이 넘은 생성 시각(새로고침, tripod.js markGenerated, `@arngard` 2026-10-13)과 할 일 줄의 체결 지시
+   (`@arngard` 2026-10-15)가 쓴다. */
+:root { --act: #ff3030; }
+.stamp .v.stale-time { color: var(--act); animation: stale-blink 1.2s ease-in-out infinite alternate; }
+@keyframes stale-blink { from { opacity: 1; } to { opacity: .3; } }
+/* 동작 줄이기를 켠 방문자에게는 깜빡이지 않는다. 빨간색만으로 알린다. */
+@media (prefers-reduced-motion: reduce) { .stamp .v.stale-time { animation: none; } }
+/* 한 줄에 다 들어가지 않으면 일부만 넘기지 않고 항목마다 한 줄로 쌓는다. 판단은
+   tripod.js(layoutStamp)가 실제 줄 갈림을 재서 한다. */
+.tripod .stamp.stacked .seg { flex-basis: 100%; }
+/* 값이 여럿인 항목(comparison.js segList). 값 하나씩은 끊지 않고, 좁으면 값마다 줄을 바꿔 이름 뒤에 맞춘다 (`@arngard` 2026-10-22). */
+.stamp .seg.multi { display: flex; min-width: 0; }
+.stamp .seg.multi .v { display: flex; flex-wrap: wrap; column-gap: 1ch; min-width: 0; margin-left: 1ch; }
+.stamp .seg.multi .k { flex: none; }
+.stamp .seg.multi .p { white-space: nowrap; }
+.tripod .note { color: var(--ink-soft); margin: 4px 0 10px; line-height: 1.6; }
+
+/* 오류는 팝업이 아니라 이 자리에 남는다. */
+.problems {
+  border: 1px solid var(--error); border-left-width: 3px; border-radius: 3px;
+  background: rgba(234, 132, 113, .08); padding: 12px 14px; margin: 16px 0;
+}
+.problems h2 { color: var(--error); }
+.problems ul { margin: 0; padding-left: 18px; }
+.problems li { margin: 3px 0; font-size: 14px; }
+
+/* 현재 상태. 확정, 신호, 행동 세 묶음을 행으로 쌓는다. 모양은 분기 표와 같다 - 상자 없이
+   위에 머리 줄과 같은 선, 행 사이에 밝은 선, 첫 열(묶음 이름)과 내용 사이에 세로선이다.
+   묶음마다 항목 수가 달라 같은 크기의 칸을 격자로 늘어놓지 않는다. */
+.now { margin: 16px 0 24px; border-top: 1px solid var(--rule); }
+.now.stale { opacity: .45; }
+.now .grp { display: flex; border-bottom: 1px solid var(--row-rule); }
+/* 글자 크기는 하나다. 묶음 이름은 제목이라 굵기로, 라벨은 색으로만 구분한다. */
+.now h3 { margin: 0; flex: none; width: 4em; padding: 10px; font-size: inherit; border-right: 1px solid var(--rule-soft); }
+.now .grp > dl { flex: 1; min-width: 0; padding: 10px; }
+.now dl { display: flex; flex-wrap: wrap; gap: 6px 28px; margin: 0; }
+.now dl > div { display: flex; align-items: baseline; gap: 8px; }
+.now dt { color: var(--ink-label); }
+.now dd { margin: 0; }
+/* 행동은 문장들을 한 줄에 잇는다 (`@arngard` 2026-10-18). 매매해야 하는 문장만 행동 색이다.
+   문장 안의 배분 이름은 배분 색이다 (`@arngard` 2026-10-18). */
+.now dd .act { color: var(--act); }
+.now dd.warn { color: var(--error); }
+
+/* 구획 사이를 넉넉히 띄운다 (`@arngard` 2026-10-04). */
+.tpanel { margin: 0 0 44px; }
+.tripod table { width: 100%; border-collapse: collapse; }
+.tripod th {
+  text-align: left; color: var(--ink-soft); font-size: var(--fs-tiny);
+  border-bottom: 1px solid var(--rule); padding: 7px 9px;
+}
+.tripod td { padding: 6px 9px; border-bottom: 1px solid var(--rule-soft); }
+.tripod .num { text-align: right; }
+.tripod th.num { text-align: right; }
+.tripod .dim { color: var(--ink-soft); }
+.tripod .warn { color: var(--error); }
+.tripod .mean, .tripod .st, .tripod .tg { color: var(--ink-soft); }
+.tripod .hist .tg { color: var(--ink); }
+
+.tripod .tree { margin: 6px 0 14px; }
+/* 분기 표 아래 계절 보정(계절 후보 판정, 낙엽 판정, 계절의 트리) (tree.render_autumn, `@arngard` 2026-10-16, 꼴은 2026-10-17). 분기 표와 같은 꼴이다. */
+.tripod .tree h3.tsub { margin: 22px 0 6px; font-size: inherit; }
+/* 판정에 쓴 값 (`@arngard` 2026-10-17). 분기 표와 같은 칸 모양이다. */
+.tree-table.inputs { width: auto; min-width: 60%; }
+.tripod .tree .tcap { margin: 14px 0 2px; color: var(--ink-soft); font-size: var(--fs-small); }
+/* 글자 크기는 본문 하나다. 표 머리만 라벨이라 작게 둔다. */
+.tree-table { width: 100%; border-collapse: collapse; }
+/* 다음 종가 표들은 한 표 안의 열 너비를 고르게 둔다 (`@arngard` 2026-10-19). 너비를 내용 길이에 맡기면 표마다 열이 들쭉날쭉하고,
+   좁은 폭에서는 짧은 열이 두세 글자 폭으로 눌린다. 판정에 쓴 값 표(.inputs)는 아래 좁은 폭 규칙을 따로 둔다. */
+.tree-table:not(.inputs) { table-layout: fixed; }
+/* 머리 줄의 아랫선은 칸이 아니라 행에 긋는다. 선을 합치는 표에서는 겹친 선 중 칸의 선이
+   행의 선보다 앞서고, 칸끼리는 위쪽 칸이 앞선다. 칸에 그으면 첫 행이 강조될 때 그 강조
+   윗선이 머리 칸의 회색 선에 가려 현재 상태의 확정 행과 모양이 달라진다. */
+.tree-table thead tr { border-bottom: 1px solid var(--rule); }
+.tree-table th { text-align: left; color: var(--ink-soft); font-size: var(--fs-tiny); padding: 7px 10px; }
+/* 가로 방향이 판정의 흐름이고 행끼리는 서로 다른 갈래라, 행을 가르는 가로줄을 세로줄보다 밝게 둔다. */
+.tree-table td { vertical-align: top; padding: 10px 10px; border-bottom: 1px solid var(--row-rule); border-left: 1px solid var(--rule-soft); }
+.tree-table td:first-child { border-left: none; }
+.tree-table .sub { color: var(--ink-soft); margin-top: 3px; line-height: 1.5; }
+.tree-table .state { color: var(--ink); margin-top: 3px; }
+.tree-table .root { background: var(--panel); vertical-align: middle; }
+/* 약식 칸. 신호 경로와 확정 경로가 아닌 칸은 조건 한 줄과 판정 낱말, 배분 이름만 적는다 (tree.py _rows,
+   `@arngard` 2026-10-15). 조건 글자를 흐리게 두어 경로의 칸과 갈린다. 판정 낱말과 배분 이름의 색은 그대로다. */
+.tree-table td.brief { padding-top: 6px; padding-bottom: 6px; }
+.tree-table td.brief:not(.alloc) > b { font-weight: normal; color: var(--ink-soft); }
+.tree-table .trend { vertical-align: middle; }
+/* 직전 종가 자리는 배경에 더해 칸의 위아래 선을 굵게 긋는다. 색을 내지 않는 환경(흑백 인쇄,
+   고대비 모드)에서도 알아보게 하기 위해서다 (`@arngard` 2026-10-05). 선을 합치는 표라 굵은 선이
+   행 구분선을 덮는다. 두 행에 걸친 추세 칸과 잎 칸이 각자 위아래에 선을 갖는다. */
+.tree-table td.here {
+  background: var(--here);
+  border-top: 3px solid var(--ink-soft); border-bottom: 3px solid var(--ink-soft);
+}
+/* 선이 직전 종가에서 3% 안인 열의 선택된 칸. 선택이 다음 종가에 바뀔 수 있어 배경을 천천히 깜빡인다
+   (tree.py UNSTEADY, `@arngard` 2026-10-15). 동작 줄이기를 켠 방문자에게는 깜빡이지 않고, 칸 안 문장이 알린다. */
+.tree-table td.here.unsteady { animation: here-blink .5s ease-in-out infinite alternate; }
+@keyframes here-blink { from { background: var(--here); } to { background: transparent; } }
+@media (prefers-reduced-motion: reduce) { .tree-table td.here.unsteady { animation: none; } }
+/* 트라이팟의 의미 색. 긍정에서 부정으로 가는 방향은 하나다 (`@arngard` 2026-10-05, 2026-10-15).
+   판정 3색(--j-*)은 파랑 긍정, 노랑 중립, 빨강 부정이다. 판정 낱말(추세, 안정성)과 차트의 판정선이 쓴다.
+   배분 4색(--a-*)은 TQQQ 녹색, 혼합(1.5배) 파랑, QQQ(1배) 노랑, 현금 빨강이다. 배분 이름, 차트의 배분 변경
+   세로선, 전환 화살표, 드롭다운의 색 원이 쓴다. 차트는 문서 최상위에서 색을 읽으므로 :root에 둔다.
+   UI 장식색(--line 등)과 섞지 않는다 - 섞으면 장식색을 바꿀 때 판정선의 뜻이 함께 바뀐다. */
+:root {
+  --j-pos: #7fb8ff; --j-neu: #f0bd68; --j-neg: #e8736a;
+  --a-tqqq: #6fcf97; --a-mix: var(--j-pos); --a-qqq: var(--j-neu); --a-cash: var(--j-neg);
+}
+.tripod .a-cash { color: var(--a-cash); }
+.tripod .a-qqq { color: var(--a-qqq); }
+.tripod .a-mix { color: var(--a-mix); }
+.tripod .a-tqqq { color: var(--a-tqqq); }
+/* 판정 낱말의 색. 상승과 안정 파랑, 유지와 보류 노랑, 하락과 불안정 빨강. 판정 값으로 내는
+   자리(상태 구획, 분기 표, 변경 내역)에만 쓴다. 배분의 색과 같은 세 색이다. */
+/* 칸의 기본 글자색(.swrow .st, .tree-table .state)보다 앞서야 하므로 선택자를 좁힌다. */
+.tripod :is(dd, .state, .st, .stab, .stance).j-rise { color: var(--j-pos); }
+/* 안정성 낱말은 낱말마다 고정 색이다 (`@arngard` 2026-10-16). 안정 녹색, 조심 노랑, 부활 파랑, 불안정 빨강, 보류 순백색(아래 j-defer).
+   배분의 색을 따르면 가을 보정이 바꾼 배분이나 플레이버마다 다른 조심 배분이 낱말의 색을 흔든다. 칸의 기본 글자색보다 앞서도록 선택자를 좁힌다. */
+.tripod :is(dd, .state, .st, .stab, span).s-stable { color: var(--a-tqqq); }
+.tripod :is(dd, .state, .st, .stab, span).s-caution { color: var(--j-neu); }
+.tripod :is(dd, .state, .st, .stab, span).s-revival { color: var(--j-pos); }
+.tripod :is(dd, .state, .st, .stab, span).s-unstable { color: var(--j-neg); }
+/* 추세 유지는 고유 배분이 없는 분기라 색을 주지 않고 순백색으로 둔다 (`@arngard` 2026-10-15). */
+.tripod :is(dd, .state, .st, .stab).j-hold { color: #ffffff; }
+/* 안정성 보류는 판정이 아니라 미룬 표시라 색을 주지 않는다 (`@arngard` 2026-10-15). */
+.tripod :is(dd, .state, .st, .stab).j-defer { color: #ffffff; }   /* 순백색으로 못 박는다. 본문 글자색을 따르지 않는다 */
+.tripod :is(dd, .state, .st, .stab, .stance).j-fall { color: var(--j-neg); }
+/* 계절 가을은 판정 3색의 노랑이다 (`@arngard` 2026-10-16). */
+.tripod :is(dd, .state, .stance).j-autumn { color: var(--j-neu); }
+.swlist .arrow { color: var(--ink-soft); margin: 0 6px; }
+.tripod .vixnote { margin-top: 18px; }
+
+
+/* 배분이 바뀐 지점. 표가 아니라 전환 하나가 한 덩어리인 줄 목록이다. 넓으면
+   덩어리 안의 칸이 같은 열 폭으로 가로로 늘어서 표의 가로줄처럼 읽히고, 좁으면
+   칸이 접혀 한 덩어리가 여러 줄이 되며 칸마다 이름이 붙는다. 경계는 화면이 아니라
+   목록 자신의 폭으로 잡는다. */
+.swlist { container-type: inline-size; font-size: 14px; }
+.swhead, .swrow {
+  display: grid; column-gap: 14px; align-items: baseline;
+  grid-template-columns: 6.8em 18em 3.6em minmax(10em, 1fr);
+  padding: 7px 4px; border-bottom: 1px solid var(--rule-soft);
+}
+/* 열 폭이 em이라 머리 줄 컨테이너의 글자 크기는 내용 줄과 같게 둔다. 작은 글자는 칸에만 준다.
+   컨테이너 글자를 줄이면 같은 em이 더 좁아져 머리와 내용의 열이 어긋난다. */
+/* 계절 열은 결합 플레이버(persephone)일 때만 있다. */
+.swlist .swhead .stance { display: none; }
+.swlist.has-stance .swhead .stance { display: inline; }
+.swlist.has-stance .swhead, .swlist.has-stance .swrow {
+  grid-template-columns: 6.8em 18em 5.6em 3.6em minmax(10em, 1fr);
+}
+.swhead { color: var(--ink-soft); border-bottom-color: var(--rule); }
+.swhead > span { font-size: var(--fs-tiny); }
+.swrow .c[data-k]::before { content: none; }
+.swrow .conf, .swrow .to, .swrow .num { white-space: nowrap; }
+.swlist .num { text-align: right; }
+.swrow .stab, .swrow .why { color: var(--ink-soft); }
+@container (max-width: 759.98px) {
+  .swhead { display: none; }
+  /* 접힌 덩어리는 격자가 아니라 흐름 배치다. 격자면 열 폭이 위아래 줄의 가장 긴 칸(날짜)을
+     따라가 짧은 수치 뒤에 빈칸이 생기고, 줄바꿈 금지 칸이 모이면 좁은 화면 폭을 넘긴다.
+     칸은 자기 폭만 차지하고 자리가 모자라면 다음 줄로 넘어간다. 줄 순서는 order가 정한다. */
+  .swrow { display: flex; flex-wrap: wrap; gap: 4px 18px; padding: 10px 2px; }
+  .swrow .conf { order: 1; }
+  .swrow .to { order: 2; flex-basis: 100%; font-size: 15px; white-space: normal; }
+  .swrow .to > span { white-space: nowrap; }
+  .swrow .stance, .swrow .stab { order: 3; }
+  .swrow .why { order: 6; flex-basis: 100%; font-size: var(--fs-small); line-height: 1.5; }
+  .swlist .num { text-align: left; }
+  .swrow .c[data-k]::before {
+    content: attr(data-k); font-size: var(--fs-tiny);
+    color: var(--ink-soft); margin-right: 6px;
+  }
+}
+
+/* ── 트라이팟 플레이버 비교 ─────────────────────────────────────────────── */
+/* 계열 색. 오르내림의 뜻은 없고 계열끼리의 상대 비교가 목적이다. 플레이버마다 색을 두고,
+   QQQ는 기준선이라 흰 실선, TQQQ는 회색 점선이다 (`@arngard` 2026-10-10, 2026-10-11). 차트가 문서 최상위에서
+   색을 읽으므로 :root에 둔다. */
+:root { --e-phrixus: #5b9cf0; --e-icarus: #e5574f; --e-amphion: #e3b341; --e-song: #4cb782; --e-persephone: #b48cf2;
+        --e-qqq: #f2f2f2; --e-tqqq: #8f8f8f; --e-base: #e040e0; }
+.comparison { padding: 22px 26px 40px; }
+.comparison > *, .comparison .cset > *, .comparison .ebody > * { max-width: 1330px; }
+/* 탭 소개와 첫 섹션 사이도 섹션 사이와 같은 44px다. .note 규칙(10px)보다 구체적으로 써야 덮이지 않는다. 10px이면 소개와 첫 섹션이 붙어 보인다. */
+.comparison .note.intro { margin-bottom: 44px; }
+.comparison .intro p { margin: 0 0 6px; }
+.comparison .cset .stamp { margin: 0 0 10px; color: var(--ink-soft); font-size: var(--fs-small); line-height: 1.6;
+  display: flex; flex-wrap: wrap; gap: 0 22px; }
+.comparison h2 { font-size: 15px; margin: 0 0 10px; color: var(--ink-soft); }
+/* 현황 탭과 같이 제목과 첫 내용 사이를 제목의 아래 여백 하나로 정한다 (`@arngard` 2026-10-17). */
+.comparison h2 + *, .comparison h2 + [hidden] + * { margin-top: 0; }
+.comparison .note { color: var(--ink-soft); margin: 4px 0 10px; line-height: 1.6; max-width: 72em; }
+.comparison .note.small { font-size: var(--fs-small); }
+/* 섹션 안의 필수 설명 (`@arngard` 2026-10-13). lead는 차트나 표 바로 위에 붙인다. lead.after는 차트 묶음 뒤에 오는
+   표의 필수 설명이라 위를 띄워 차트와 갈라 놓는다. 부연은 섹션에 두지 않고 '가정과 한계'로 내린다. */
+.comparison .note.lead { margin-bottom: 4px; }
+.comparison .note.lead.after { margin-top: 22px; }
+.comparison .pickrow { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; }
+.comparison .pickrow .lbl { color: var(--ink-label); font-size: var(--fs-small); min-width: 6.5em; }
+.comparison .chart.tall { height: 460px; }
+/* 범례 항목은 눌러서 계열을 켜고 끈다. 상자 자체는 차트 조작을 막지 않게 두고 항목만 받는다. */
+.comparison .legend.toggles .item { pointer-events: auto; cursor: pointer; user-select: none; border-radius: 2px; padding: 0 2px; }
+.comparison .legend.toggles .item:focus-visible { outline: 1px solid var(--line); }
+.comparison .legend.toggles .item.off { opacity: .35; }
+.comparison .legend.toggles .item.fixed { cursor: default; }
+/* 90% 범위 견본은 선이 아니라 칠한 상자다. 색은 고른 계열을 따라 comparison.js가 준다. */
+.comparison .legend i.fill { width: 14px; height: 9px; border-radius: 2px; }
+/* 진입일 탐색 범례의 값은 자료를 받아 평가금을 계산한 뒤에 정해진다. 그 전의 대시와 뒤의 배수(0.00배)가 같은 폭을 차지하게 해,
+   값이 들어와도 범례 줄이 다시 접히지 않게 한다 (`@arngard` 2026-10-23). */
+.comparison [data-e="eExLegend"] .v { display: inline-block; min-width: calc(4ch + 1em); }
+/* 시간 창 띠와 진입일 막대. 띠는 차트와 같은 좌우 여백을 써서 날짜 위치가 대략 맞게 한다. */
+/* 높이는 띠를 그리기 전부터 잡아 둔다. 자료가 늦게 와도 아래 구획이 밀리지 않게 한다 (`@arngard` 2026-10-23). 띠의 SVG도 70픽셀이다. */
+.strip { position: relative; width: 100%; height: 70px; cursor: pointer; touch-action: none; margin-top: 6px; }
+/* 시간 창과 차트를 끌 때 연도 글자나 범례가 블록 선택되지 않게 한다 (`@arngard` 2026-10-22). */
+.strip, .chart { -webkit-user-select: none; user-select: none; }
+/* 자료를 받기 전이나 받지 못했을 때 차트 자리에 두는 자리 표시 (`@arngard` 2026-10-23). 문구는 data-msg에 둔다. */
+.chart.unavailable::after { content: attr(data-msg); position: absolute; inset: 0; z-index: 5; display: flex; align-items: center;
+  justify-content: center; color: var(--ink-label); font-size: var(--fs-small); pointer-events: none; }
+.strip svg { display: block; width: 100%; height: auto; }
+.strip text { font-family: var(--mono); font-size: 12px; fill: var(--ink-label); }
+.comparison .controls { display: flex; flex-direction: column; gap: 2px; margin: 4px 0 8px; }
+.comparison .controls .ranges { margin: 4px 0; }
+.comparison .emeta { display: flex; flex-wrap: wrap; gap: 6px 28px; margin: 4px 0 10px; }
+.comparison .emeta > div.row { flex-basis: 100%; }
+/* 진입 배분은 플레이버마다 한 줄, 이름과 배분을 두 열로 맞춘다. */
+.comparison .emeta dd.alloc { display: grid; grid-template-columns: max-content max-content; gap: 2px 12px; font-family: inherit; }
+.comparison .emeta dd.alloc .k { color: var(--ink-soft); }
+.comparison .emeta dd .v { font-family: var(--mono); color: var(--ink); }
+.comparison .emeta > div { display: flex; align-items: baseline; gap: 8px; }
+.comparison .emeta > div.row { align-items: start; }
+.comparison .emeta dt { color: var(--ink-label); white-space: nowrap; }
+.comparison .emeta dd { margin: 0; font-family: var(--mono); }
+.comparison .wide { overflow-x: auto; margin: 8px 0 6px; }
+/* 진입일 탐색 표는 자료를 받아 평가금을 계산한 뒤에야 칸이 차서, 그 전의 대시 틀보다 넓어진다. 그 사이 폭의 화면에서는 표가 그때
+   넘쳐 가로 스크롤 막대가 생기며 아래가 밀린다. 막대 자리를 늘 두고 바탕을 투명하게 해, 넘치지 않을 때는 빈 여백으로 보이게 한다
+   (`@arngard` 2026-10-23). 막대가 내용 위에 겹쳐 뜨는 환경(모바일 등)에서는 자리를 차지하지 않는다. */
+.comparison [data-e="eExTable"] { overflow-x: scroll; scrollbar-color: var(--line) transparent; }
+.comparison table { width: 100%; border-collapse: collapse; min-width: 640px; }
+.comparison th { text-align: left; color: var(--ink-soft); font-size: var(--fs-tiny); border-bottom: 1px solid var(--rule); padding: 7px 9px; }
+.comparison td { padding: 6px 9px; border-bottom: 1px solid var(--rule-soft); vertical-align: top; }
+/* 첫 열(경과, 계열 이름)은 접지 않는다. 표는 좁은 화면에서 가로로 스크롤된다(.wide). */
+.comparison td:first-child, .comparison th:first-child { white-space: nowrap; }
+.comparison .num { text-align: right; font-family: var(--mono); white-space: nowrap; }
+.comparison th.num { font-family: inherit; }
+.comparison td .sub { color: var(--ink-soft); font-size: var(--fs-tiny); }
+.comparison td.best { background: var(--here); }
+/* 고른 보기의 값 열 머리. 글자 밝기로만 가른다. */
+.comparison td .why { color: var(--ink-soft); font-family: inherit; font-size: var(--fs-tiny); }
+/* 지표 종합의 표는 색 아이콘 열만 왼쪽에 붙여 둔다. 계열 이름은 다른 칸과 함께 스크롤된다. 좁은 화면에서
+   가로로 스크롤해도 어느 행이 어느 계열인지 색으로 보이게 하려는 것이다 (`@arngard` 2026-10-14). */
+.comparison .metrics .ki { position: sticky; left: 0; z-index: 1; background: var(--paper); width: 1px; padding: 6px 6px 6px 2px; }
+.comparison .metrics .ki .key { margin-right: 0; }
+.comparison .metrics .name { white-space: nowrap; padding-left: 3px; }
+.comparison .key { display: inline-block; width: 12px; height: 2px; vertical-align: middle; margin-right: 7px; }
+/* 장세별 선택 탭. 표는 열이 적어 내용 폭으로 둔다. 세로선이 있는 구간과 범례의 1등 값은 밝게 표시한다.
+   그래프는 가로로 끌어 세로선을 옮기고, 세로 스크롤은 페이지에 남긴다(touch-action: pan-y).
+   그래프 높이는 폭에 비례한다(가로:세로 4:3). 좁은 화면에서는 최소 높이로 선 사이를 띄운다 (`@arngard` 2026-10-14). */
+.comparison table.narrow { width: auto; min-width: 0; }
+.comparison table.narrow td { white-space: nowrap; }
+.comparison tr.here td { background: var(--here); }
+.comparison .legend .item.best .v { background: var(--here); padding: 0 3px; border-radius: 2px; }
+/* 그래프 묶음의 최대 폭은 본문 줄글(.note)의 최대 폭과 같다 (`@arngard` 2026-10-14). */
+.comparison .choicebox { max-width: 72em; }
+.comparison .choicechart { aspect-ratio: 4 / 3; min-height: 380px; max-width: 100%; position: relative; cursor: ew-resize; touch-action: pan-y; user-select: none; }
+.comparison .choicechart svg { display: block; position: absolute; inset: 0; }
+.comparison .choicechart:focus-visible { outline: 1px solid var(--line); }
+.comparison .choicechart text { font-size: 12px; }
+.comparison .choicechart text.ax { font-family: var(--mono); }
+.comparison .assume { padding-left: 18px; }
+.comparison .assume li { margin: 2px 0; }
+.comparison .problems h2 { color: var(--error); }
+
+/* ── 좁은 화면 (760px 미만) ─────────────────────────────────── */
+@media (max-width: 759.98px) {
+  /* 탭이 다섯이라 좁은 화면에서는 글자를 꺾지 않고 탭 줄을 가로로 스크롤한다. */
+  .tabs { overflow-x: auto; scrollbar-width: none; }
+  .tabs .brand { margin: 0 8px 0 12px; font-size: 15px; }
+  .tabs { padding: 0; }
+  .tabs .tab { flex: none; padding: 12px 10px; white-space: nowrap; }
+
+  .tripod { padding: 14px 12px 32px; }
+  .comparison { padding: 14px 12px 32px; }
+  .comparison .chart.tall { height: max(260px, 50vh); }
+  /* 테스트 탭의 조작 줄은 버튼 글자(날짜, "QQQ 대비")가 길어 한 줄에 다 넣으면 버튼 안에서 끊긴다.
+     버튼 묶음을 이름표 아래 한 줄 전체로 내리고, 글자는 끊지 않고 넘치는 버튼을 다음 줄로 보낸다. */
+  .comparison .pickrow .ranges { flex: 1 1 100%; margin-top: 2px; }
+  .comparison .pickrow .ranges button { flex: 1 0 auto; padding: 8px 6px; white-space: nowrap; }
+
+  .now .grp { flex-direction: column; }
+  .now h3 { width: auto; border-right: none; padding: 8px 6px 0; }
+  .now .grp > dl { padding: 6px 6px 10px; }
+  .now dl { gap: 4px 20px; }
+  .tree-table td, .tree-table th { padding: 8px 6px; }
+  /* 판정에 쓴 값 표는 열 너비를 내용 길이에 맡기면 짧은 열이 두세 글자 폭으로 눌려 표 머리 기준으로 고정한다. */
+  .tree-table.inputs { table-layout: fixed; }
+  .tree-table.inputs th:nth-child(1), .tree-table.inputs th:nth-child(2) { width: 36%; }
+  .tree-table.inputs th:nth-child(3) { width: 28%; }
+}
+
+/* 전략 상세 탭 (`@arngard` 2026-10-16). 표는 좁은 화면에서 안쪽에서만 가로로 밀린다. */
+.tripod.detail .steps { margin: 0 0 14px; padding-left: 1.4em; display: grid; gap: 6px; line-height: 1.6; }
+.tripod.detail .steps b { margin-right: 6px; }
+.tripod.detail .dscroll { overflow-x: auto; max-width: 100%; }
+.tripod.detail .dtable { width: auto; min-width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.tripod.detail .dtable th, .tripod.detail .dtable td { padding: 6px 12px; border-bottom: 1px solid var(--rule); text-align: left; white-space: nowrap; }
+.tripod.detail .dtable thead th, .tripod.detail .dtable tbody th { color: var(--ink-label); font-weight: normal; }
