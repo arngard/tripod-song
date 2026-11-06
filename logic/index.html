@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>트라이팟 송</title>
+<meta name="description" content="트라이팟 송 플레이버들의 파라미터와 판정 구조. 아릉의 연구 결과 공개이며 투자 권유가 아니다.">
+<link rel="canonical" href="https://arngard.github.io/tripod-song/logic/">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="alternate" type="application/json" href="../state.json" title="플레이버별 현재 판정 요약">
+<link rel="alternate" type="text/plain" href="../llms.txt" title="AI용 안내">
+<link rel="stylesheet" href="../base.css?v=c988864bf7">
+<link rel="stylesheet" href="../site.css?v=6e56af9ba0">
+</head>
+<body data-build="2026-11-06T23:30:29Z">
+<nav class="tabs">
+  <h1 class="brand"><img src="../favicon.svg" alt="" width="20" height="20">트라이팟 송</h1>
+  <a class="tab" href="../" data-view="tripod">현황</a>
+  <a class="tab on" href="../logic/" data-view="detail" aria-current="page">논리</a>
+  <a class="tab" href="../nasdaq/" data-view="comparison" data-set="nasdaq">나스닥 테스트</a>
+  <a class="tab" href="../nikkei/" data-view="comparison" data-set="nikkei">닛케이 테스트</a>
+  <a class="tab" href="../analysis/" data-view="comparison" data-set="perf">분석</a>
+</nav>
+<!-- 논리 탭. 판정의 구조를 풀어 쓴다. 실험 결과나 내부 문서는 두지 않는다. 플레이버를 모두 나열하고, 다른 탭의 선택을 따르지
+     않는다 (`@arngard` 2026-10-16). 공통 구조를 한 번 적고, 플레이버마다 다른 값은 표 하나에 열로 나란히 둔다. 표와 계절 구획은
+     생성(tripod/prerender.py)이 그린다 (`@arngard` 2026-10-23). -->
+<div class="tripod detail" data-view="detail">
+  <!-- 각 구획은 파라미터를 먼저 표로 나열하고, 그 다음에 논리를 설명한다. 논리는 숫자를 다시 쓰지 않고 파라미터 이름으로 가리킨다
+       (`@arngard` 2026-10-16). -->
+  <!-- 탭 소개. 이 규칙이 다루는 범위를 밝힌다 (`@arngard` 2026-11-03). -->
+  <p class="note intro">트라이팟 송은 자산 전체의 배분을 정하는 전략이 아니다. 한정된 시드를 나스닥 레버리지 ETF를 이용하여 운용하는 타이밍 전략이다. 시드에 얼마를 넣을지는 이 규칙 밖에서 정한다.</p>
+  <section class="tpanel">
+    <h2>파라미터</h2>
+    <div class="dscroll"><table class="dtable" id="dParams"><thead><tr><th></th><th>persephone 5.5 봄</th><th>persephone 5.5 겨울</th><th>phrixus 3.1</th><th>amphion 3.1</th><th>icarus 3.0</th><th>song 1.0</th></tr></thead><tbody><tr><th>이동평균</th><td>200일</td><td>170일</td><td>220일</td><td>270일</td><td>120일</td><td>250일</td></tr><tr><th>상승 밴드</th><td>-6.5%</td><td>+5.5%</td><td>+6.5%</td><td>-2%</td><td>+2.5%</td><td>+1%</td></tr><tr><th>하락 밴드</th><td>-15%</td><td>-1%</td><td>-13%</td><td>-2%</td><td>-20%</td><td>-5%</td></tr><tr><th>VIX 평균 창</th><td>41일</td><td>4일</td><td>2일</td><td>9일</td><td>8일</td><td>10일</td></tr><tr><th>VIX 조심선</th><td>55</td><td>51</td><td>58</td><td>24</td><td>59</td><td>28</td></tr><tr><th>VIX 부활선</th><td>8</td><td>17</td><td>13</td><td>16</td><td>11</td><td>18</td></tr><tr><th>52주 낙폭 한도</th><td>-19%</td><td>-37%</td><td>-15%</td><td>-10%</td><td>-12%</td><td>-9%</td></tr><tr><th>확인일수</th><td>20거래일</td><td>16거래일</td><td>12거래일</td><td>4거래일</td><td>3거래일</td><td>1거래일</td></tr><tr><th>조심 배분</th><td><span class="a-qqq">QQQ 100%</span></td><td><span class="a-qqq">QQQ 100%</span></td><td><span class="a-qqq">QQQ 100%</span></td><td><span class="a-mix">QQQ 50% + QLD 50%</span></td><td><span class="a-qqq">QQQ 100%</span></td><td><span class="a-mix">QQQ 50% + QLD 50%</span></td></tr></tbody></table></div>
+  </section>
+  <section class="tpanel">
+    <h2>판정 구조</h2>
+    <ol class="steps">
+      <li><b>추세</b> NDX 종가가 상승 전환선(이동평균에서 상승 밴드만큼 옮긴 선)보다 높으면 상승, 하락 전환선(이동평균에서 하락 밴드만큼 옮긴 선)보다 낮으면 하락, 그 사이면 유지다.</li>
+      <li><b>안정성</b> 추세가 상승이면 VIX 평균(VIX 평균 창 동안의 평균)이 VIX 조심선 미만이고 52주 낙폭이 52주 낙폭 한도 안일 때 안정, 아니면 조심이다. 추세가 하락이면 VIX 평균이 VIX 부활선 미만일 때 부활, 아니면 불안정이다. 추세가 유지면 안정성을 판정하지 않는다(보류).</li>
+      <li><b>신호 배분</b> 추세와 안정성의 조합으로 정한다(아래 표). 보류면 직전 신호 배분을 물려받는다.</li>
+      <li><b>확정과 체결</b> 같은 신호 배분이 확인일수만큼 이어지면 확정하고, 다음 거래일 종가에 체결한다.</li>
+    </ol>
+    <div class="dscroll"><table class="dtable">
+      <thead><tr><th>추세</th><th>안정성</th><th>신호 배분</th></tr></thead>
+      <tbody>
+        <tr><td>상승</td><td>안정</td><td><span class="a-tqqq">TQQQ 100%</span></td></tr>
+        <tr><td>상승</td><td>조심</td><td>조심 배분(위 파라미터 표)</td></tr>
+        <tr><td>유지</td><td>보류</td><td>직전 신호 배분을 물려받는다</td></tr>
+        <tr><td>하락</td><td>부활</td><td><span class="a-mix">QQQ 50% + QLD 50%</span></td></tr>
+        <tr><td>하락</td><td>불안정</td><td><span class="a-cash">현금 100%</span></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+  <section class="tpanel" id="dComposite"><h2>persephone의 계절</h2><div class="dscroll"><table class="dtable"><tbody><tr><th>계절 이동평균</th><td>280일</td></tr><tr><th>계절 비교 간격</th><td>70거래일</td></tr><tr><th>장력 기준</th><td>1.25 표준편차</td></tr><tr><th>장력 추세선 시작</th><td>1990-01-02</td></tr><tr><th>장력 추세선 최소 기간</th><td>2520거래일</td></tr><tr><th>금리 비교 간격</th><td>336거래일</td></tr><tr><th>방아쇠 금리 상승</th><td>+0.625%p</td></tr><tr><th>방아쇠 52주 낙폭</th><td>-40%</td></tr><tr><th>금리 충격</th><td>+3.75%p</td></tr><tr><th>가을 보정 확인일수</th><td>7거래일</td></tr><tr><th>가을 안정성</th><td>안정 대신 조심</td></tr></tbody></table></div><ol class="steps"><li><b>계절 후보 판정</b> NDX의 계절 이동평균이 계절 비교 간격 전보다 높으면 계절 후보가 봄, 아니면 겨울이다. 계절 후보가 봄이면 봄 파라미터로, 겨울이면 겨울 파라미터로 판정한다. 계절 후보 판정에는 확인일수가 없다. 계절은 아래 가을 보정을 거쳐 정해진다.</li><li><b>장력</b> 주식이 채권에 비해 평소보다 얼마나 비싼지를 나타낸다. 10년 국채 금리와 주식의 이익 수익률(미국 기업 세후 이익을 NDX로 나눈 값)의 비율이, 장력 추세선 시작 이후의 장기 추세보다 표준편차 몇 배만큼 높은지로 잰다. 장력 기준 이상이면 장력이 높다고 본다. 자료가 장력 추세선 최소 기간보다 짧으면 재지 않는다.</li><li><b>방아쇠</b> 10년 국채 금리가 금리 비교 간격 동안 방아쇠 금리 상승 이상 올랐거나, 52주 낙폭이 방아쇠 52주 낙폭보다 깊으면 방아쇠가 당겨진다.</li><li><b>금리 충격</b> 10년 국채 금리가 금리 비교 간격 동안 금리 충격 이상 오른 경우다.</li><li><b>낙엽</b> 금리 충격이 있거나, 장력이 높은 가운데 방아쇠가 당겨진 날을 낙엽이라 한다. 날마다 다시 판정한다.</li><li><b>가을 보정</b> 낙엽이 가을 보정 확인일수만큼 이어지면 켜지고, 낙엽이 없는 날이 가을 보정 확인일수만큼 이어지면 꺼진다. 켜져 있는 동안 계절 후보가 봄이면 계절을 가을로 보정한다. 계절 후보가 겨울이면 보정하지 않는다.</li><li><b>가을</b> 가을에는 봄 파라미터로 판정하되, 안정성 판정이 안정이면 조심으로 바꾸고 조심의 배분을 든다(가을 안정성). 보류가 물려받은 안정도 조심으로 본다. 가을이 시작되거나 끝나는 날에는 확정 배분이 그날 바로 바뀐다. 가을 보정 확인일수로 이미 확인했으므로 신호의 확인일수를 다시 세지 않는다.</li></ol></section>
+</div>
+<footer class="tripod sitenote"><p class="note">이 페이지는 아릉이 규칙 기반 전략을 연구하며 매일 기계적으로 계산해 공개하는 연구 결과다. 판정과 행동 문장은 그 규칙이 내는 계산 결과이며 투자 권유가 아니다. 이를 참고해 매매하는 행위와 그 결과의 책임은 매매하는 본인에게 있다. 자료: Yahoo Finance, FRED.</p></footer>
+
+<script>addEventListener("load", function () { setTimeout(function () { ["../comparison.json?v=2026-11-06T23:30:29Z", "../comparison-nikkei.json?v=2026-11-06T23:30:29Z"].forEach(function (u) { fetch(u).catch(function () {}); }); }, 0); });</script>
+</body>
+</html>

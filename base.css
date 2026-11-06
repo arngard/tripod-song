@@ -1,0 +1,114 @@
+/* 공유 모듈의 기본 스타일. 투자 지원 도구(밸류에이션)와 트라이팟 송 사이트가 함께 참조한다.
+   색과 글자 토큰, 초기화, 입력 요소, 기간 버튼, 차트 상자와 범례, 안내문만 둔다. 한쪽 화면에만
+   쓰이는 규칙은 각자의 스타일 파일에 둔다 - 여기를 고치면 두 화면이 함께 바뀐다. */
+
+:root {
+  --paper: #121212;
+  --panel: #222222;
+  --field: #313131;
+  --entry: #080808;
+  --entry-ink: #ffffff;
+  --ink: #ffffff;
+  --ink-soft: #d1d1d1;
+  /* 이름표(라벨)의 색. 값과 크기가 아니라 이 색 하나로만 갈린다. */
+  --ink-label: #adadad;
+  /* 표의 행 구분선. 열 구분선(--rule-soft)보다 밝다. */
+  --row-rule: #626262;
+  /* 표에서 지금 자리를 밝히는 강조 배경. */
+  --here: rgba(255, 255, 255, .10);   /* 7%는 너무 옅어 10%로 둔다 (`@arngard` 2026-10-14) */
+  --rule: #444444;
+  --rule-soft: #343434;
+  --line: #8a8a8a;
+  --warn: #f0bd68;
+  --error: #ea8471;
+  /* 글자 크기. 본문은 15px이고 부차적인 글자도 12px 밑으로 내리지 않는다
+     (`@arngard` 2026-10-05, 모든 글자를 1px씩 줄임). */
+  --fs-body: 15px;
+  --fs-small: 13px;
+  --fs-tiny: 12px;
+  /* 단독으로 내는 값의 글꼴. 0과 O, 1과 l을 갈라 오독을 막는다. */
+  --mono: "Source Code Pro", Consolas, monospace;
+}
+* { box-sizing: border-box; }
+/* 표의 칸이나 필드처럼 값 하나를 단독으로 내는 자리만 고정폭으로 쓴다. 문장 속의
+   숫자, 라벨, 판정 낱말, 배분 이름은 브라우저 기본 글꼴 그대로다. 화면마다 더하는 자리는
+   각자의 스타일 파일이 정한다. */
+.mono, .legend .v { font-family: var(--mono); }
+/* display를 지정한 요소에도 hidden 속성이 듣게 한다. */
+[hidden] { display: none !important; }
+html { height: 100%; }
+/* 머리 막대와 화면이 세로로 쌓인다. 화면이 남는 높이만 채워야 문서가 머리 막대만큼
+   길어지지 않는다 - 길어지면 새로고침의 스크롤 복원이 머리 막대를 위로 밀어 가린다. */
+body {
+  margin: 0; min-height: 100%; display: flex; flex-direction: column;
+  background: var(--paper); color: var(--ink); font-size: var(--fs-body);
+}
+
+label { font-size: var(--fs-tiny); color: var(--ink-soft); }
+input[type=text], select {
+  font: inherit; padding: 8px 10px; border: 1px solid var(--rule);
+  background: var(--entry); border-radius: 2px; color: var(--entry-ink);
+}
+input[type=text]::placeholder { color: #6f7c84; }
+/* 드롭다운은 브라우저 기본 모양을 지우고 오른쪽 끝에 아래쪽 화살표를 그린다 (`@arngard` 2026-10-14). 화살표가 없으면
+   누를 수 있는 칸으로 보이지 않는다. 글자가 화살표에 겹치지 않게 오른쪽 여백을 넓힌다. */
+select {
+  appearance: none; padding-right: 34px; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23d1d1d1' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center; background-size: 12px 8px;
+}
+select:disabled { background-image: none; cursor: default; }
+:focus-visible { outline: 2px solid var(--line); outline-offset: 1px; }
+input[type=range] { width: 100%; accent-color: var(--line); }
+input[type=checkbox] {
+  appearance: none; width: 16px; height: 16px; margin: 0;
+  border: 1px solid var(--rule); border-radius: 2px;
+  background: var(--entry); cursor: pointer;
+  display: inline-grid; place-content: center; flex: none;
+  /* input은 부모 글자색을 물려받지 않는다. 명시하지 않으면 체크 표시가
+     브라우저 기본색인 검정으로 찍혀 어두운 바탕에서 사라진다. */
+  color: inherit;
+}
+input[type=checkbox]:checked { border-color: currentColor; }
+/* 체크 표시는 라벨 색을 그대로 받는다. */
+input[type=checkbox]:checked::before {
+  content: ""; width: 10px; height: 10px; background: currentColor;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+input[type=checkbox]:disabled { cursor: default; opacity: .55; }
+
+/* ── 차트 구획 ─────────────────────────
+   상자로 감싸지 않고 위에서부터 설명 글, 기간 버튼, 차트 순서로 놓는다.
+   기간 버튼은 차트 바로 위에 붙여 무엇을 움직이는지가 위치로 드러나게 한다. */
+.ranges { display: flex; flex-wrap: wrap; gap: 4px; margin: 8px 0; }
+.ranges button {
+  font: inherit; font-size: var(--fs-tiny); padding: 5px 10px; cursor: pointer;
+  border: 1px solid var(--rule); background: var(--field); border-radius: 3px; color: var(--ink-soft);
+}
+.ranges button:hover:not(:disabled) { color: var(--ink); }
+.ranges button:disabled { opacity: .35; cursor: default; }
+.ranges button.on { color: var(--ink); border-color: var(--line); }
+/* 차트는 따로 좌우 여백을 두지 않고 다른 구획과 같은 폭을 쓴다 (`@arngard` 2026-10-05). */
+/* 범례는 차트에 겹치지 않고 차트 바로 위 줄에 둔다(모든 폭, `@arngard` 2026-10-11). */
+.chartbox { position: relative; display: flex; flex-direction: column; }
+.chart { height: 380px; position: relative; }
+.chart.short { height: 300px; }
+.legend {
+  order: -1; pointer-events: none; padding: 0 0 6px;
+  display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: var(--fs-tiny); color: var(--ink-soft);
+}
+.legend:empty { display: none; }
+.legend .item { display: inline-flex; align-items: center; gap: 5px; }
+.legend i { display: inline-block; width: 12px; height: 2px; border-radius: 1px; }
+.legend .v { color: var(--ink); }
+
+/* 안내문은 글자 크기를 따로 두지 않는다. 본문과는 색으로 이미 갈린다. */
+.note { margin: 0; color: var(--ink-soft); }
+.note.err { color: var(--error); }
+
+/* ── 좁은 화면 (760px 미만) ─────────────────────────────────── */
+@media (max-width: 759.98px) {
+  .ranges button { flex: 1; padding: 8px 2px; min-width: 0; }
+  .chart { height: max(240px, 45vh); }
+  .chart.short { height: max(200px, 32vh); }
+}
