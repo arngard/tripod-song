@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>트라이팟 송</title>
+<meta name="description" content="트라이팟 플레이버의 장세별 지표, 장세 기대에 따른 선택, 과적합 시험. 아릉의 연구 결과 공개이며 투자 권유가 아니다.">
+<link rel="canonical" href="https://arngard.github.io/tripod-song/analysis/">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="alternate" type="application/json" href="../state.json" title="플레이버별 현재 판정 요약">
+<link rel="alternate" type="text/plain" href="../llms.txt" title="AI용 안내">
+<link rel="stylesheet" href="../base.css?v=c988864bf7">
+<link rel="stylesheet" href="../site.css?v=a61cf7efc1">
+</head>
+<body data-build="2026-11-13T23:31:34Z">
+<nav class="tabs">
+  <h1 class="brand"><img src="../favicon.svg" alt="" width="20" height="20">트라이팟 송</h1>
+  <a class="tab" href="../" data-view="tripod">현황</a>
+  <a class="tab" href="../logic/" data-view="detail">논리</a>
+  <a class="tab" href="../nasdaq/" data-view="comparison" data-set="nasdaq">나스닥 테스트</a>
+  <a class="tab" href="../nikkei/" data-view="comparison" data-set="nikkei">닛케이 테스트</a>
+  <a class="tab" href="../replay/" data-view="replay">역사 반복</a>
+  <a class="tab on" href="../analysis/" data-view="comparison" data-set="perf" aria-current="page">분석</a>
+</nav>
+<div class="comparison" data-view="comparison">
+  <!-- 플레이버 비교의 묶음 셋. 나스닥 테스트, 닛케이 테스트, 분석 탭이 각각 하나다
+       (`@arngard` 2026-10-15, 탭을 한 단계로 둔다. 분석은 장세별 선택과 지표 종합을 합친 것 2026-10-27). 제목은 탭 줄 왼쪽의 "트라이팟 송" 하나다.
+       탭마다 페이지가 따로 있어(`@arngard` 2026-11-03) 생성기가 이름:begin, 이름:end 표시로 다른 묶음을 잘라 내고 그 페이지의 묶음만 남긴다.
+       닛케이 테스트는 탭 이름과 문구에 닛케이를 드러낸다 (`@arngard` 2026-10-20, 그 전에는 맨 위 소개에만 밝혔다).
+       테스트 탭 둘(나스닥, 침체장)의 구획은 아래 template 하나를 comparison.js가 복제해 채운다. data-only가 붙은 요소는
+       그 탭에만 남는다. 분석은 다른 모양이라 template을 쓰지 않고 구획을 여기 직접 둔다. -->
+  
+  
+  <!-- perf:begin -->
+  <!-- 분석 (`@arngard` 2026-10-27). 과거 성과를 한 탭에 모은다. 장세별 지표는 tripod-song-backtest/regime_metrics.py가 계산한
+       고정값(metricsData), 기대에 따른 선택과 중립 성장률은 tripod/choice.py가 굽는 고정값(choiceData), 과적합 시험은 손으로 옮긴
+       고정 글이다. 값을 계산한 시각이 서로 달라 탭 머리에 시각을 두지 않고 구획마다 따로 적는다. 장세별 지표를 맨 앞에 두는 것은
+       지난 성적을 먼저 보이고 그것을 앞으로의 기대로 옮기는 선택을 뒤에 두기 위해서다 (`@arngard` 2026-10-27). -->
+  <div class="cset choice metrics" data-set="perf">
+    <p class="note intro">트라이팟 플레이버와 QQQ, TQQQ 보유의 과거 성과를 모은다. 값은 모두 세후이고, 플레이버는 주변 설정들의 평균이다.</p>
+    <!-- 장세별 지표. 장세 묶음마다 표를 쌓지 않고 장세 단추로 표 하나를 바꿔 보인다 (`@arngard` 2026-10-27). 단추는 차트의 기간
+         단추와 같은 꼴의 보기 조작이고 탭이 아니다. -->
+    <section class="tpanel">
+      <h2>장세별 지표</h2>
+      <p class="stamp" data-m="mStamp"></p>
+      <p class="note lead">표의 밝은 칸은 그 열에서 뚜렷하게 앞선 값이고, 열 이름에 마우스를 올리면 뜻이 나온다.</p>
+      <div class="controls tablepick">
+        <div class="pickrow"><span class="lbl">장세</span><div class="ranges" data-m="mRegimes"></div></div>
+      </div>
+      <p class="note lead" data-m="mLead"></p>
+      <div class="wide" data-m="mTable"></div>
+      <p class="note">장세 묶음의 값은 주가 자료마다 낸 값의 단순 평균이고, 자료마다 기간과 출발점이 다르다.</p>
+    </section>
+    <!-- 기대에 따른 선택 섹션은 조작하는 그래프를 먼저, 그 아래에 우위 구간 표를 둔다 (`@arngard` 2026-10-14).
+         표는 그래프의 기간 버튼과 범례의 켜고 끄기를 따른다. -->
+    <section class="tpanel">
+      <h2>기대에 따른 선택</h2>
+      <p class="stamp" data-c="cStamp"></p>
+      <p class="note lead">앞으로의 장세가 나스닥(상승장)과 현실 침체장(닛케이 가상과 코스피 가상) 사이 어딘가에 놓인다고 보고, 어느 쪽에 더 가까울지에 대한 기대에 따라 유리한 계열을 고른다. 가로축은 장세가 상승장에 가까운 정도(상승 경향)이고, 세로축은 기간이 지난 뒤 원금의 배수다. 그래프를 누르거나 끌어 세로선을 옮기고, 범례를 눌러 선을 켜고 끈다.</p>
+      <div class="choicebox">
+        <div class="controls">
+          <div class="pickrow"><span class="lbl">기간</span><div class="ranges" data-c="cYears"></div></div>
+        </div>
+        <div class="chartbox">
+          <div data-c="cChart" class="choicechart" role="slider" tabindex="0" aria-label="상승 경향" aria-valuemin="0" aria-valuemax="100"></div>
+          <div data-c="cLegend" class="legend"></div>
+        </div>
+        <p class="note small" data-c="cAt"></p>
+      </div>
+      <p class="note lead after">표는 상승 경향 구간마다 기대 성장이 가장 큰 계열을 보인다(기간 <span data-c="cPickYears">10</span>년).</p>
+      <div class="wide" data-c="cPick"></div>
+      <p class="note">기대 성장은 앞으로의 기간 전체가 두 장세 가운데 어느 한쪽을 닮는다고 보고, 상승 경향에 따라 나스닥과 현실 침체장의 성장률을 섞은 값이다. 현실 침체장의 성장률은 두 자료의 평균이다. 낙폭은 반영하지 않았으므로 긴 보유를 전제로 한 비교다.</p>
+    </section>
+    <!-- 과적합 시험 (`@arngard` 2026-10-27). Persephone을 고른 방법의 표본 밖 검정(tripod-song-backtest/fold_eval.py,
+         results/fold_eval.txt)을 줄여 옮긴 고정 글이다. 단순 추세 규칙 행은 같은 시험 구간의 결과(baseline_eval.py,
+         results/baseline_eval.txt의 단순 추세 규칙 행, `@arngard` 2026-10-30)로, 이동평균 150 ~ 250일 11개 규칙을 각각 따로 운용한 지표를 같은 무게로 평균한 값이다. Phrixus 행은 Phrixus 3.1과 같은 목적 함수에 고해상도 탐색법을 더한 절차의
+         같은 검정(phrixus_fold_eval.py, results/phrixus_fold_eval.txt, `@arngard` 2026-10-27)이고 Persephone 행 다음에 둔다. Omphalos 행은 같은 겹, 창, 열로
+         이동평균 일수 하나를 학습 구간에서 고른 검정(omphalos_eval.py, results/omphalos_eval.txt의 "(4) 과적합 시험", `@arngard` 2026-11-11)이고 표의 맨 아래에 둔다.
+         결과가 바뀌면 손으로 고친다. 날마다 다시 내는 탭의 값과 시각이
+         달라 구획 안에 시험 결과를 낸 시각을 따로 적는다. 시각은 표의 값 가운데 가장 나중에 낸 쪽(Omphalos 행, 결과 파일의 생성 줄)의 것이다.
+         기준 단추가 고른 행과의 차이는 comparison.js가 이 표의 값에서 계산해 값 아랫줄에 덧붙인다 (`@arngard` 2026-10-30, 아랫줄은 2026-11-01). 행의 data-v가 단추의 data-v와 짝이다.
+         탐색 구간 행(searched)은 글자를 낮추고 아랫줄 없이 한 줄로 둔다 (`@arngard` 2026-11-01).
+         탐색 구간 행을 뺀 값으로 장세별 지표와 같은 규칙의 칸을 comparison.js가 밝힌다 (`@arngard` 2026-11-01).
+         미국장 NtG62 열은 results/fold_eval.txt 등의 두 기간 미국장 NtG62 값의 평균이다 (`@arngard` 2026-11-01). 기간마다 exp(0.62 ln(1 + 나스닥100) + 0.38 ln(1 + S&P500)) - 1이고,
+         평균은 산술 평균이다. 그래서 미지 구간 행의 아랫줄이 고른 기준 대비 평균 초과분이고, Persephone과 Phrixus 행의 단순 추세 규칙 기준 값이 proc_eval.py의 평균 초과분이다.
+         화면에 보이는 값끼리 뺀 차이라 results/proc_eval.txt의 값과 0.01 다를 수 있다. -->
+    <section class="tpanel">
+      <h2>과적합 시험</h2>
+      <p class="stamp"><span class="seg">생성 <span class="v">2026-11-11 01:38:49</span></span></p>
+      <p class="note lead">Persephone, Phrixus, Omphalos는 1990년 이후 전체 기간을 보고 파라미터를 최적화했으므로 성장률이 과대평가되었을 수 있다. 그래서 기간을 둘로 나눠, 한쪽 구간만 보고 파라미터를 다시 고른 뒤 다른 구간에서 성장률을 재 보았다. 열 이름에 마우스를 올리면 뜻이 나온다.</p>
+      <div class="controls tablepick">
+        <div class="pickrow"><span class="lbl">기준</span><div class="ranges" data-o="oBase"><button type="button" class="on" data-v="qqq">QQQ 보유</button><button type="button" data-v="sma">단순 추세 규칙</button></div></div>
+      </div>
+      <div class="wide overfit" data-o="oTable">
+        <table>
+          <thead><tr><th class="ki"></th><th class="name">계열</th><th class="num" title="2011 ~ 2026의 나스닥100 세후 성장률."><span class="head">나스닥100<br>2011 ~ 2026</span></th><th class="num" title="1990 ~ 2005의 나스닥100 세후 성장률."><span class="head">나스닥100<br>1990 ~ 2005</span></th><th class="num" title="2011 ~ 2026의 S&amp;P500 세후 성장률."><span class="head">S&amp;P500<br>2011 ~ 2026</span></th><th class="num" title="1990 ~ 2005의 S&amp;P500 세후 성장률."><span class="head">S&amp;P500<br>1990 ~ 2005</span></th><th class="num" title="중립 성장률(Neutral Growth 62)의 두 기간 평균. 나스닥100과 S&amp;P500 사이, 나스닥100 비중 62%에서의 연 성장률을 평균했다. 미지 구간 행의 아랫줄이 고른 기준을 넘어선 평균 초과분이다."><span class="head">미국장 NtG62<br>두 기간 평균</span></th></tr></thead>
+          <tbody>
+            <tr data-v="qqq"><td class="ki"><i class="key" style="background:var(--e-qqq)"></i></td><td class="name" title="그 지수의 1배 상품을 계속 보유한 값이다.">QQQ 보유</td><td class="num">16.48%</td><td class="num">14.76%</td><td class="num">11.77%</td><td class="num">9.21%</td><td class="num">13.64%</td></tr>
+            <tr data-v="sma"><td class="ki"><i class="key" style="background:var(--e-sma)"></i></td><td class="name" title="파라미터를 고르지 않은 기준선. 종가가 이동평균 위면 그 지수의 3배 상품을, 아래면 현금을 드는 규칙을 이동평균 150 ~ 250일 열한 개로 따로 돌린 뒤 그 성적을 평균했다.">단순 추세 규칙</td><td class="num">26.34%</td><td class="num">23.50%</td><td class="num">15.11%</td><td class="num">12.82%</td><td class="num">20.64%</td></tr>
+            <tr class="searched"><td class="ki"><i class="key" style="background:var(--e-persephone)"></i></td><td class="name" title="1990년 이후 전체를 보고 고른 Persephone 5.5를 이 기간에 잰 값이다. 고를 때 본 기간이라 부풀어 있을 수 있다.">Persephone 탐색 구간</td><td class="num">45.21%</td><td class="num">61.34%</td><td class="num">23.93%</td><td class="num">25.06%</td><td class="num">41.59%</td></tr>
+            <tr><td class="ki"><i class="key" style="background:var(--e-persephone)"></i></td><td class="name" title="이 기간을 가리고 나머지 기간만 보고 같은 방법으로 다시 고른 파라미터를 이 기간에 잰 값이다.">Persephone 미지 구간</td><td class="num">34.35%</td><td class="num">34.62%</td><td class="num">10.54%</td><td class="num">7.83%</td><td class="num">24.24%</td></tr>
+            <tr class="searched"><td class="ki"><i class="key" style="background:var(--e-phrixus)"></i></td><td class="name" title="1990년 이후 전체를 보고 Phrixus 절차로 고른 파라미터를 이 기간에 잰 값이다. 현황 탭의 3.1과는 다른 파라미터다. 고를 때 본 기간이라 부풀어 있을 수 있다.">Phrixus 탐색 구간</td><td class="num">30.23%</td><td class="num">55.97%</td><td class="num">9.78%</td><td class="num">15.71%</td><td class="num">30.64%</td></tr>
+            <tr><td class="ki"><i class="key" style="background:var(--e-phrixus)"></i></td><td class="name" title="이 기간을 가리고 나머지 기간만 보고 같은 방법으로 다시 고른 파라미터를 이 기간에 잰 값이다.">Phrixus 미지 구간</td><td class="num">20.71%</td><td class="num">30.34%</td><td class="num">5.81%</td><td class="num">20.30%</td><td class="num">20.62%</td></tr>
+            <tr class="searched"><td class="ki"><i class="key" style="background:var(--e-omphalos)"></i></td><td class="name" title="1990년 이후 전체를 보고 이동평균 일수를 고른 Omphalos 1.0(313일)을 이 기간에 잰 값이다. 이동평균선 하나의 규칙이고, 이동평균 일수를 하루 단위로 30일까지 늘리고 줄인 설정들을 가까운 일수일수록 무겁게 쳐서 평균했다. 고를 때 본 기간이라 부풀어 있을 수 있다.">Omphalos 탐색 구간</td><td class="num">31.00%</td><td class="num">31.90%</td><td class="num">16.33%</td><td class="num">19.01%</td><td class="num">26.04%</td></tr>
+            <tr><td class="ki"><i class="key" style="background:var(--e-omphalos)"></i></td><td class="name" title="이 기간을 가리고 나머지 기간만 보고 이동평균 일수를 다시 고른 Omphalos를 이 기간에 잰 값이다. 이동평균선 하나의 규칙이고, 평활은 탐색 구간 행과 같다. 고른 일수는 2011 ~ 2026을 가렸을 때 416일, 1990 ~ 2005를 가렸을 때 330일이다(훑은 범위 150 ~ 450일).">Omphalos 미지 구간</td><td class="num">30.10%</td><td class="num">30.29%</td><td class="num">11.83%</td><td class="num">18.85%</td><td class="num">24.33%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">시험 결과, 미지 구간의 나스닥100 성장률은 탐색 구간보다 10 ~ 27%p 낮았다. 플레이버의 성장률을 그만큼 할인해서 봐야 한다는 뜻이다. 단순 추세 규칙과 비교하면, Persephone은 두 기간 모두 나스닥100에서 앞서고 S&amp;P500에서 뒤졌지만 미국장 NtG62 평균으로는 앞섰다. Phrixus는 2011 ~ 2026에 뒤지고 1990 ~ 2005에 앞섰다. Omphalos는 2011 ~ 2026을 가렸을 때 416일, 1990 ~ 2005를 가렸을 때 330일을 골랐고, 미지 구간의 나스닥100 성장률이 탐색 구간(313일)보다 2011 ~ 2026에 0.90%p, 1990 ~ 2005에 1.61%p 낮았다.</p>
+      <p class="note">다만 가려 둔 기간마다 한 번씩 운용한 값이라, 플레이버와 단순 추세 규칙 사이의 몇 %p 차는 약한 증거다. Phrixus 두 행은 현황 탭의 3.1이 아니라, 같은 목적 함수로 더 촘촘하게 찾는 방법으로 고른 결과다. Persephone은 계산 시간을 줄이려고 탐색의 출발점을 줄여 돌렸고, 계절 구조처럼 파라미터가 아닌 설계는 전체 기간을 보고 정했으므로 실제로 부푼 정도는 표보다 클 수 있다.</p>
+    </section>
+    <section class="tpanel">
+      <h2>가정과 한계</h2>
+      <!-- 탭 전체나 여러 구획에 걸치는 것만 둔다. 한 구획에 매인 설명은 그 구획의 표 아래에 줄글로 둔다 (`@arngard` 2026-11-03). -->
+      <ul class="note assume">
+        <li>과적합 시험의 단순 추세 규칙은 파라미터를 고르지 않은 기준선이다. 그 지수의 종가가 이동평균 위면 그 지수의 3배 상품을, 아래면 현금을 드는 규칙을 이동평균 150, 160, ..., 250일 열한 개로 따로 돌린 뒤 그 성적을 평균했다. 일수 하나만 쓰면 값이 크게 흔들려서 평균을 쓰며, 플레이버가 주변 설정들의 평균인 것과 같은 방식이다. 체결 시점과 세금은 플레이버와 같다.</li>
+        <li>연 성장률은 세후 금액(달러)의 기간 전체 추세로 잰 값이라 시작과 끝 시점의 우연에 덜 흔들린다.</li>
+        <li>현실 침체장의 주가는 크게 떨어진 뒤 오래 횡보하므로, 연 성장률 하나로는 그 흐름을 다 담지 못한다. 나스닥의 TQQQ 보유도 2000년대 초에 거의 0까지 떨어져 마찬가지다.</li>
+        <li>1990년 이전 주가 자료에는 VIX가 없어 실현 변동성으로 만든 대용값을 쓴다. 상품 수익은 지수로 합성한 값이다.</li>
+        <li>과거 자료로 계산한 결과이며, 앞으로도 같은 장세가 이어진다는 보장은 없다.</li>
+      </ul>
+    </section>
+  </div>
+  <!-- perf:end -->
+
+  
+</div>
+<script type="application/json" id="choiceData">{"measured":"2026-10-23 08:38:02","span":{"nasdaq":"1990-01-02 ~ 2026-10-15","down":"닛케이 가상 1990-01-04 ~ 2026-10-09, 코스피 가상 1998-09-02 ~ 2026-10-14"},"series":[{"key":"QQQ","label":"QQQ 보유","g_nasdaq":0.11227,"g_down":0.038484},{"key":"TQQQ","label":"TQQQ 보유","g_nasdaq":0.069035,"g_down":-0.068226},{"key":"persephone","label":"Persephone 5.5","g_nasdaq":0.344696,"g_down":0.000373},{"key":"phrixus","label":"Phrixus 3.1","g_nasdaq":0.274534,"g_down":0.020915},{"key":"amphion","label":"Amphion 3.1","g_nasdaq":0.194764,"g_down":0.01675},{"key":"icarus","label":"Icarus 3.0","g_nasdaq":0.292992,"g_down":-0.037538},{"key":"song","label":"Song 1.0","g_nasdaq":0.195795,"g_down":0.00412},{"key":"omphalos","label":"Omphalos 1.0","g_nasdaq":0.198776,"g_down":0.017929}]}</script>
+<script type="application/json" id="metricsData">{"measured":"2026-11-11 01:07:07","us_paths":["나스닥 1990 ~","S&P500 1990 ~"],"up_paths":["나스닥 1990 ~","S&P500 1990 ~","나스닥 종합 1971 ~ 1989","S&P500 1960 ~ 1989","닛케이225 1965 ~ 1989"],"down_paths":["닛케이 가상","코스피 가상"],"unreal_paths":["탈추세 나스닥","부트스트랩 1","부트스트랩 2","부트스트랩 3","부트스트랩 4"],"series":["QQQ","TQQQ","persephone","phrixus","amphion","icarus","song","omphalos"],"nasdaq":{"QQQ":{"growth":11.881517,"mdd":-82.762852,"sharpe":0.543874,"sortino":0.784282,"calmar":0.143561,"ulcer":37.371426,"wnh90":null,"ntg":8.788073,"dsg":0.0},"TQQQ":{"growth":7.147356,"mdd":-99.979168,"sharpe":0.530878,"sortino":0.765049,"calmar":0.071488,"ulcer":82.177783,"wnh90":null,"ntg":1.7019,"dsg":-3.353763},"persephone":{"growth":41.156057,"mdd":-69.89828,"sharpe":0.842821,"sortino":1.215616,"calmar":0.5889,"ulcer":23.881193,"wnh90":2.4,"ntg":23.844086,"dsg":0.0},"phrixus":{"growth":31.591668,"mdd":-78.733551,"sharpe":0.720925,"sortino":1.030273,"calmar":0.402774,"ulcer":38.366373,"wnh90":5.7,"ntg":19.501469,"dsg":0.0},"amphion":{"growth":21.502361,"mdd":-64.537291,"sharpe":0.61252,"sortino":0.860098,"calmar":0.333817,"ulcer":32.732691,"wnh90":9.7,"ntg":13.555123,"dsg":0.0},"icarus":{"growth":34.043156,"mdd":-79.508865,"sharpe":0.779924,"sortino":1.117097,"calmar":0.429986,"ulcer":37.084309,"wnh90":5.1,"ntg":18.221589,"dsg":-1.859372},"song":{"growth":21.627754,"mdd":-66.41479,"sharpe":0.617034,"sortino":0.865831,"calmar":0.326252,"ulcer":34.260277,"wnh90":9.2,"ntg":13.083761,"dsg":0.0},"omphalos":{"growth":21.990884,"mdd":-86.126164,"sharpe":0.6148,"sortino":0.866254,"calmar":0.255489,"ulcer":51.386275,"wnh90":7.2,"ntg":13.889019,"dsg":0.0}},"us":{"QQQ":{"growth":10.058601,"mdd":-69.120021,"sharpe":0.525871,"sortino":0.751072,"calmar":0.146006,"ulcer":25.858007},"TQQQ":{"growth":7.304613,"mdd":-99.176622,"sharpe":0.495773,"sortino":0.707504,"calmar":0.07367,"ulcer":69.713077},"persephone":{"growth":30.896666,"mdd":-73.291098,"sharpe":0.735076,"sortino":1.048284,"calmar":0.429024,"ulcer":23.865047},"phrixus":{"growth":21.220208,"mdd":-80.748709,"sharpe":0.593384,"sortino":0.837728,"calmar":0.26735,"ulcer":39.729475},"amphion":{"growth":17.296818,"mdd":-60.396727,"sharpe":0.553473,"sortino":0.769739,"calmar":0.284088,"ulcer":29.526108},"icarus":{"growth":20.328564,"mdd":-86.613426,"sharpe":0.597565,"sortino":0.844217,"calmar":0.250611,"ulcer":46.626826},"song":{"growth":17.24018,"mdd":-61.760109,"sharpe":0.556551,"sortino":0.772612,"calmar":0.27595,"ulcer":30.581819},"omphalos":{"growth":17.951325,"mdd":-74.278788,"sharpe":0.567178,"sortino":0.787937,"calmar":0.239231,"ulcer":39.595043}},"up":{"QQQ":{"growth":10.182263,"mdd":-56.058696,"sharpe":0.384685,"sortino":0.539367,"calmar":0.19612,"ulcer":18.821608},"TQQQ":{"growth":6.933494,"mdd":-94.210645,"sharpe":0.307496,"sortino":0.433992,"calmar":0.074911,"ulcer":63.243727},"persephone":{"growth":18.421879,"mdd":-75.184809,"sharpe":0.423285,"sortino":0.598634,"calmar":0.250874,"ulcer":37.386042},"phrixus":{"growth":12.700807,"mdd":-81.234147,"sharpe":0.336176,"sortino":0.470463,"calmar":0.160092,"ulcer":47.088015},"amphion":{"growth":11.212999,"mdd":-70.620384,"sharpe":0.306311,"sortino":0.42256,"calmar":0.169554,"ulcer":38.280685},"icarus":{"growth":11.107178,"mdd":-86.755497,"sharpe":0.325377,"sortino":0.456937,"calmar":0.137534,"ulcer":53.805963},"song":{"growth":11.653815,"mdd":-68.88575,"sharpe":0.323738,"sortino":0.444344,"calmar":0.174031,"ulcer":38.719488},"omphalos":{"growth":13.404344,"mdd":-75.644165,"sharpe":0.381383,"sortino":0.515969,"calmar":0.177523,"ulcer":40.427768}},"down":{"QQQ":{"growth":3.952107,"mdd":-68.308928,"sharpe":0.284375,"sortino":0.403335,"calmar":0.066517,"ulcer":36.843113},"TQQQ":{"growth":-6.185506,"mdd":-99.073099,"sharpe":0.273833,"sortino":0.388256,"calmar":-0.061615,"ulcer":90.049696},"persephone":{"growth":0.063649,"mdd":-95.04374,"sharpe":0.243025,"sortino":0.34204,"calmar":0.001681,"ulcer":79.074277},"phrixus":{"growth":2.175883,"mdd":-93.152745,"sharpe":0.280095,"sortino":0.39012,"calmar":0.025034,"ulcer":71.847805},"amphion":{"growth":1.752821,"mdd":-87.863384,"sharpe":0.270449,"sortino":0.376375,"calmar":0.022937,"ulcer":63.235567},"icarus":{"growth":-3.521254,"mdd":-96.570794,"sharpe":0.207845,"sortino":0.287955,"calmar":-0.034182,"ulcer":81.298422},"song":{"growth":0.469233,"mdd":-90.407207,"sharpe":0.220454,"sortino":0.305429,"calmar":0.00792,"ulcer":69.416274},"omphalos":{"growth":1.827542,"mdd":-88.118472,"sharpe":0.299633,"sortino":0.420734,"calmar":0.021633,"ulcer":59.297905}},"unreal":{"QQQ":{"growth":-1.533174,"mdd":-82.43981,"sharpe":0.036229,"sortino":0.05152,"calmar":-0.015134,"ulcer":55.02578},"TQQQ":{"growth":-28.721424,"mdd":-99.925085,"sharpe":0.020871,"sortino":0.029727,"calmar":-0.287285,"ulcer":88.561188},"persephone":{"growth":-4.647892,"mdd":-92.955931,"sharpe":0.18918,"sortino":0.266513,"calmar":-0.048351,"ulcer":72.354415},"phrixus":{"growth":-6.581663,"mdd":-94.087269,"sharpe":0.153416,"sortino":0.215935,"calmar":-0.067081,"ulcer":74.238393},"amphion":{"growth":-7.630802,"mdd":-92.38572,"sharpe":0.014042,"sortino":0.020071,"calmar":-0.078889,"ulcer":72.003922},"icarus":{"growth":-7.237451,"mdd":-96.299761,"sharpe":0.173038,"sortino":0.243725,"calmar":-0.073459,"ulcer":75.383331},"song":{"growth":-5.747118,"mdd":-91.631094,"sharpe":0.055863,"sortino":0.078306,"calmar":-0.058386,"ulcer":70.919678},"omphalos":{"growth":-8.843264,"mdd":-96.495281,"sharpe":0.04737,"sortino":0.066216,"calmar":-0.09128,"ulcer":81.091037}},"labels":{"persephone":"Persephone 5.5","phrixus":"Phrixus 3.1","amphion":"Amphion 3.1","icarus":"Icarus 3.0","song":"Song 1.0","omphalos":"Omphalos 1.0","QQQ":"QQQ 보유","TQQQ":"TQQQ 보유"},"labels_flavor":{"persephone":"Persephone 5.5","phrixus":"Phrixus 3.1","amphion":"Amphion 3.1","icarus":"Icarus 3.0","song":"Song 1.0","omphalos":"Omphalos 1.0"}}</script>
+<footer class="tripod sitenote"><p class="note">이 페이지는 아릉이 규칙 기반 전략을 연구하며 매일 기계적으로 계산해 공개하는 연구 결과다. 판정과 행동 문장은 그 규칙이 내는 계산 결과이며 투자 권유가 아니다. 이를 참고해 매매하는 행위와 그 결과의 책임은 매매하는 본인에게 있다. 자료: Yahoo Finance, FRED.</p></footer>
+<script src="https://cdn.jsdelivr.net/npm/lightweight-charts@5.2.1/dist/lightweight-charts.standalone.production.js"
+  integrity="sha384-KkYqTZlM13Zya6fVUF3IGCBOQ1ehFeJVVgxaVvD/0MebineF9EI8Jkd3NnWNChqN"
+  crossorigin="anonymous"></script>
+<script src="../chartkit.js?v=839ffa7bbe"></script>
+<script src="../comparison.js?v=c332caa9fb"></script>
+<script>addEventListener("load", function () { setTimeout(function () { ["../comparison.json?v=2026-11-13T23:31:34Z", "../comparison-nikkei.json?v=2026-11-13T23:31:34Z"].forEach(function (u) { fetch(u).catch(function () {}); }); }, 0); });</script>
+</body>
+</html>

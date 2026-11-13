@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>트라이팟 송</title>
+<meta name="description" content="다음 종가부터 나스닥100의 과거 한 구간이 되풀이된다고 가정할 때 트라이팟 플레이버의 판정이 어떻게 이어지는지 보인다. 아릉의 연구 결과 공개이며 투자 권유가 아니다.">
+<link rel="canonical" href="https://arngard.github.io/tripod-song/replay/">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="alternate" type="application/json" href="../state.json" title="플레이버별 현재 판정 요약">
+<link rel="alternate" type="text/plain" href="../llms.txt" title="AI용 안내">
+<link rel="stylesheet" href="../base.css?v=c988864bf7">
+<link rel="stylesheet" href="../site.css?v=a61cf7efc1">
+</head>
+<body data-build="2026-11-13T23:31:34Z">
+<nav class="tabs">
+  <h1 class="brand"><img src="../favicon.svg" alt="" width="20" height="20">트라이팟 송</h1>
+  <a class="tab" href="../" data-view="tripod">현황</a>
+  <a class="tab" href="../logic/" data-view="detail">논리</a>
+  <a class="tab" href="../nasdaq/" data-view="comparison" data-set="nasdaq">나스닥 테스트</a>
+  <a class="tab" href="../nikkei/" data-view="comparison" data-set="nikkei">닛케이 테스트</a>
+  <a class="tab on" href="../replay/" data-view="replay" aria-current="page">역사 반복</a>
+  <a class="tab" href="../analysis/" data-view="comparison" data-set="perf">분석</a>
+</nav>
+<!-- 역사 반복 탭. 다음 종가부터 과거의 한 구간이 되풀이된다고 가정할 때 고른 플레이버의 판정을 보인다.
+     판정은 생성이 원천 기준일 후보마다 미리 계산해 replay.json으로 굽고(tripod/replay.py), 화면(replay.js)은 고른 후보의 판정을
+     펼치고 판정선을 종가와 파라미터로 다시 그린다. 명세는 epistemic-structure/architecture/tripod-replay.md다. -->
+<div class="tripod replay" data-view="replay" data-src="../replay.json?v=2026-11-13T23:31:34Z">
+  <header class="th">
+    <p class="stamp" data-pre="stamp">
+      <span class="seg">생성 <span id="tGenerated" class="v">2026-11-14 08:30:24</span></span>
+      <span class="seg">직전 종가 <span id="tBasis" class="v"><span class="nw">2026-11-14 06:00 KST</span> <span class="nw">(2026-11-13 16:00 ET)</span></span></span>
+      <span class="seg">다음 종가 <span id="tNext" class="v"><span class="nw">2026-11-17 06:00 KST</span> <span class="nw">(2026-11-16 16:00 ET)</span></span></span>
+    </p>
+  </header>
+
+  <section class="tpanel strategy">
+    <h2>전략</h2>
+    <div class="pick">
+      <label for="rStrategy">플레이버</label>
+      <select id="rStrategy"><option value="persephone" selected>🟢 Persephone 5.5 - Lv4 장세 대응형 최고 수익률</option><option value="phrixus">🟢 Phrixus 3.1 - Lv2 장세를 불문하고 준수한 수익률</option><option value="amphion">🟢 Amphion 3.1 - Lv2 안정감을 위해 수익을 양보</option><option value="icarus">🟢 Icarus 3.0 - Lv2 장기 상승장에서 높은 수익률</option><option value="song">🔵 Song 1.0 - Lv2 송팀장 원안</option><option value="omphalos">🟢 Omphalos 1.0 - Lv1 단일 이동평균선 규칙</option></select>
+    </div>
+    <p class="note">직전 종가 다음 거래일부터 고른 과거 구간의 나스닥100 일별 등락이 그대로 되풀이된다고 가정하고, 이 플레이버의 판정을 처음부터 다시 계산한다. 현황 탭에서 고른 플레이버와 같이 바뀐다.</p>
+  </section>
+
+  <p class="problems" id="rProblems" hidden></p>
+
+  <!-- 시장 상황 차트와 같은 두 패널이다. 왼쪽 가로폭 10%가 직전 종가까지의 실제 자료이고, 끌거나 가로로 스크롤하면 원천 기준일이
+       후보 사이를 옮겨 반복 구간만 바뀐다. 아래 시간 창 띠는 이어붙인 원천 구간을 실제 나스닥100 위에 상자로 보인다. -->
+  <section class="tpanel">
+    <h2>역사 반복</h2>
+    <p class="note lead">점선 왼쪽은 직전 종가까지의 실제 자료이고 오른쪽이 반복 구간이다. 점선의 색은 직전 종가의 확정 배분이다. 차트를 끌거나 가로로 스크롤하거나 아래 띠를 누르면 이어붙일 과거 구간이 분기 첫 거래일이나 큰 하락 직전 고점 단위로 옮겨진다. 오른쪽으로 끌면 더 이른 구간이다. 시장 사건은 반복 구간에서는 그날이 옮겨 온 과거 날짜를 따라 단다.</p>
+    <div class="controls">
+      <div class="pickrow"><span class="lbl">기간</span><div class="ranges" id="rSpan">
+        <button type="button" data-n="63">3달</button><button type="button" data-n="126">6달</button><button type="button" data-n="252">1년</button><button type="button" data-n="756">3년</button><button type="button" data-n="1260">5년</button><button type="button" data-n="2520">10년</button><button type="button" data-n="3780">15년</button><button type="button" data-n="5040">20년</button>
+      </div></div>
+      <div class="pickrow"><span class="lbl">큰 하락 직전 고점</span><div class="ranges" id="rJump"></div></div>
+    </div>
+    <dl class="emeta" id="rSrcMeta"></dl>
+    <div class="chartbox"><div id="rChartPrice" class="chart tall"></div><div id="rLegendPrice" class="legend"></div></div>
+    <div class="strip" id="rStrip" aria-hidden="true"></div>
+    <p class="note">판정선은 그날 따른 파라미터로 그린다. 세로선은 확정 배분이 바뀐 날이고 색은 바뀐 뒤의 배분이다.</p>
+    <div class="chartbox"><div id="rChartVix" class="chart short"></div><div id="rLegendVix" class="legend"></div></div>
+  </section>
+
+  <!-- 반복 구간의 배수. 나스닥 테스트 탭 진입일 탐색과 같은 배치다(조작 줄, 진입 정보, 차트와 범례, 표 위 설명, 표, 부연). 진입일은 직전 종가,
+       끝은 반복 구간 끝으로 고정이라 기간 버튼과 시간 창 띠는 두지 않는다 (`@arngard` 2026-11-08). -->
+  <section class="tpanel">
+    <h2>반복 구간의 배수</h2>
+    <p class="note lead">직전 종가에 1억 원을 넣은 뒤 반복 구간 동안의 결과다. 범례를 눌러 선을 켜고 끈다.</p>
+    <div class="controls">
+      <div class="pickrow"><span class="lbl">기준</span><div class="ranges base" id="rGrowBase"><button type="button" class="on" data-v="seed">원금 대비</button><button type="button" data-v="qqq">QQQ 대비</button></div></div>
+    </div>
+    <dl class="emeta" id="rGrowMeta"></dl>
+    <div class="chartbox"><div id="rGrowChart" class="chart tall"></div><div id="rGrowLegend" class="legend"></div></div>
+    <p class="note lead after" id="rGrowCaption"></p>
+    <div class="wide" id="rGrowTable"></div>
+    <p class="note">환율은 직전 종가까지 기간 버튼의 길이만큼의 실제 원/달러 환율 평균 하나로 고정한다. 그래서 원화 배수에 환차익과 환차손이 들지 않는다. 차입 금리와 현금 이자에 쓰는 13주 국채 금리는 원천 구간의 변화폭을 직전 값에 더하고 0 아래로 내리지 않는다. 차트의 세로축은 0.01배 아래를 잘라 낸다.</p>
+  </section>
+
+  <section class="tpanel">
+    <h2>가정과 한계</h2>
+    <!-- 테스트 탭과 같이 탭 전체에 걸치는 경고만 짧게 둔다. 옮기는 방식의 세부와 이유는 명세(tripod-replay.md "가상 경로")에 있다 (`@arngard` 2026-11-08). -->
+    <ul class="note assume">
+      <li>나스닥100은 원천 구간의 일별 등락을 직전 종가에 이어 붙인 가상 경로다. 거래일 순번으로 맞추므로 계절성은 옮기지 않는다.</li>
+      <li>VIX는 원천 날짜의 수준을 그대로 옮기므로, 직전 VIX와 원천 기준일 VIX가 다르면 이어 붙인 날에 단차가 생긴다.</li>
+      <li>Persephone의 가을 보정에 쓰는 10년 국채 금리와 기업 이익은 원천 구간의 변화를 지금 값에 이어 붙인다.</li>
+      <li>세금은 한국에 사는 개인을 기준으로 단순하게 계산했으므로 실제 세금과 다를 수 있다. 양도세 기본공제가 고정 금액이라 투자금에 따라 세후 결과가 달라지므로, 투자금을 1억 원으로 정했다.</li>
+      <li>플레이버는 배분을 바꿀 때마다 세금을 내고, QQQ와 TQQQ 보유는 팔 때 한 번만 낸다. 그래서 세금을 미루는 보유 쪽이 유리하게 보인다.</li>
+      <li>상품 수익은 지수로 합성한 값이라 실제 상품의 수익과 다를 수 있다.</li>
+      <li>이 화면은 한 가지 가상 경로에서 규칙이 어떻게 반응하는지를 보인다. 미래의 예측이 아니다.</li>
+    </ul>
+  </section>
+</div>
+<script type="application/json" id="eventsData">[{"from":"1990-07-16","to":"1990-10-11","name":"걸프전"},{"from":"1994-03-17","to":"1994-06-24","name":"채권 대학살"},{"from":"1997-10-09","to":"1997-12-24","name":"아시아 외환위기"},{"from":"1998-07-20","to":"1998-10-08","name":"러시아 디폴트"},{"from":"2000-03-10","to":"2002-10-09","name":"닷컴 버블"},{"from":"2007-10-31","to":"2009-03-09","name":"서브프라임 모기지"},{"from":"2010-04-23","to":"2010-07-02","name":"유럽 재정위기"},{"from":"2011-07-22","to":"2011-08-19","name":"미국 신용등급 강등"},{"from":"2015-07-20","to":"2015-08-25","name":"위안화 절하"},{"from":"2018-08-29","to":"2018-12-24","name":"미중 무역전쟁"},{"from":"2020-02-19","to":"2020-03-23","name":"코로나19"},{"from":"2022-02-16","to":"2022-03-14","name":"우크라이나 전쟁"},{"from":"2022-06-15","to":"2022-11-02","name":"연준 자이언트스텝"},{"from":"2024-07-31","to":"2024-08-07","name":"일본 금리 쇼크"},{"from":"2025-02-19","to":"2025-04-08","name":"관세 충격"},{"from":"2026-01-28","to":"2026-03-30","name":"이란 전쟁"}]</script>
+<footer class="tripod sitenote"><p class="note">이 페이지는 아릉이 규칙 기반 전략을 연구하며 매일 기계적으로 계산해 공개하는 연구 결과다. 판정과 행동 문장은 그 규칙이 내는 계산 결과이며 투자 권유가 아니다. 이를 참고해 매매하는 행위와 그 결과의 책임은 매매하는 본인에게 있다. 자료: Yahoo Finance, FRED.</p></footer>
+<script src="https://cdn.jsdelivr.net/npm/lightweight-charts@5.2.1/dist/lightweight-charts.standalone.production.js"
+  integrity="sha384-KkYqTZlM13Zya6fVUF3IGCBOQ1ehFeJVVgxaVvD/0MebineF9EI8Jkd3NnWNChqN"
+  crossorigin="anonymous"></script>
+<script src="../chartkit.js?v=839ffa7bbe"></script>
+<script src="../replay.js?v=4048f9ed58"></script>
+<script>addEventListener("load", function () { setTimeout(function () { ["../comparison.json?v=2026-11-13T23:31:34Z", "../comparison-nikkei.json?v=2026-11-13T23:31:34Z"].forEach(function (u) { fetch(u).catch(function () {}); }); }, 0); });</script>
+</body>
+</html>

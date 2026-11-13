@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>트라이팟 송</title>
+<meta name="description" content="나스닥100 실제 주가에서 진입 시점에 따라 트라이팟 플레이버와 QQQ, TQQQ 보유의 세후 평가금이 어떻게 갈리는지 보인다. 아릉의 연구 결과 공개이며 투자 권유가 아니다.">
+<link rel="canonical" href="https://arngard.github.io/tripod-song/nasdaq/">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="alternate" type="application/json" href="../state.json" title="플레이버별 현재 판정 요약">
+<link rel="alternate" type="text/plain" href="../llms.txt" title="AI용 안내">
+<link rel="stylesheet" href="../base.css?v=c988864bf7">
+<link rel="stylesheet" href="../site.css?v=a61cf7efc1">
+</head>
+<body data-build="2026-11-13T23:31:34Z">
+<nav class="tabs">
+  <h1 class="brand"><img src="../favicon.svg" alt="" width="20" height="20">트라이팟 송</h1>
+  <a class="tab" href="../" data-view="tripod">현황</a>
+  <a class="tab" href="../logic/" data-view="detail">논리</a>
+  <a class="tab on" href="../nasdaq/" data-view="comparison" data-set="nasdaq" aria-current="page">나스닥 테스트</a>
+  <a class="tab" href="../nikkei/" data-view="comparison" data-set="nikkei">닛케이 테스트</a>
+  <a class="tab" href="../replay/" data-view="replay">역사 반복</a>
+  <a class="tab" href="../analysis/" data-view="comparison" data-set="perf">분석</a>
+</nav>
+<div class="comparison" data-view="comparison">
+  <!-- 플레이버 비교의 묶음 셋. 나스닥 테스트, 닛케이 테스트, 분석 탭이 각각 하나다
+       (`@arngard` 2026-10-15, 탭을 한 단계로 둔다. 분석은 장세별 선택과 지표 종합을 합친 것 2026-10-27). 제목은 탭 줄 왼쪽의 "트라이팟 송" 하나다.
+       탭마다 페이지가 따로 있어(`@arngard` 2026-11-03) 생성기가 이름:begin, 이름:end 표시로 다른 묶음을 잘라 내고 그 페이지의 묶음만 남긴다.
+       닛케이 테스트는 탭 이름과 문구에 닛케이를 드러낸다 (`@arngard` 2026-10-20, 그 전에는 맨 위 소개에만 밝혔다).
+       테스트 탭 둘(나스닥, 침체장)의 구획은 아래 template 하나를 comparison.js가 복제해 채운다. data-only가 붙은 요소는
+       그 탭에만 남는다. 분석은 다른 모양이라 template을 쓰지 않고 구획을 여기 직접 둔다. -->
+  <!-- nasdaq:begin --><div class="cset" data-set="nasdaq" data-src="../comparison.json?v=2026-11-13T23:31:34Z" data-labels="{&quot;persephone&quot;: &quot;Persephone 5.5&quot;, &quot;phrixus&quot;: &quot;Phrixus 3.1&quot;, &quot;amphion&quot;: &quot;Amphion 3.1&quot;, &quot;icarus&quot;: &quot;Icarus 3.0&quot;, &quot;song&quot;: &quot;Song 1.0&quot;, &quot;omphalos&quot;: &quot;Omphalos 1.0&quot;}" data-gen="2026-11-14 08:30:25" data-span="1990-01-02 ~ 2026-11-13" data-pre="{&quot;distKey&quot;: &quot;임의의 날짜에 진입했을 때 운용 기간에 따른 결과다. 선은 중심값, 띠는 90% 범위다. 세로선은 각 플레이버의 WnH90이다. 범례를 눌러 선을 켜고 끈다.&quot;, &quot;distBasis&quot;: &quot;임의의 진입일로는 1991-05-21 ~ 2026-11-02 사이 매달 첫 거래일 427번을 썼다. 진입일마다 투자금 전부를 한 번에 넣는다.&quot;, &quot;distTable&quot;: &quot;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;경과&lt;/th&gt;&lt;th class=\&quot;num\&quot;&gt;표본&lt;/th&gt;&lt;th class=\&quot;num\&quot;&gt;QQQ 보유&lt;/th&gt;&lt;th class=\&quot;num\&quot;&gt;TQQQ 보유&lt;/th&gt;&lt;th class=\&quot;num\&quot;&gt;Persephone 5.5&lt;/th&gt;&lt;th class=\&quot;num\&quot;&gt;Phrixus 3.1&lt;/th&gt;&lt;th class=\&quot;num\&quot;&gt;Amphion 3.1&lt;/th&gt;&lt;th class=\&quot;num\&quot;&gt;Icarus 3.0&lt;/th&gt;&lt;th class=\&quot;num\&quot;&gt;Song 1.0&lt;/th&gt;&lt;th class=\&quot;num\&quot;&gt;Omphalos 1.0&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;1년&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;415개&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;1.16배&lt;div class=\&quot;sub\&quot;&gt;0.76배 ~ 1.78배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 28%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;1.16배&lt;div class=\&quot;sub\&quot;&gt;0.26배 ~ 5.25배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 44%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num best\&quot;&gt;1.49배&lt;div class=\&quot;sub\&quot;&gt;0.78배 ~ 2.83배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 15%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;1.36배&lt;div class=\&quot;sub\&quot;&gt;0.67배 ~ 2.78배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 24%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;1.29배&lt;div class=\&quot;sub\&quot;&gt;0.73배 ~ 2.27배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 23%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;1.40배&lt;div class=\&quot;sub\&quot;&gt;0.66배 ~ 2.97배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 23%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;1.28배&lt;div class=\&quot;sub\&quot;&gt;0.66배 ~ 2.49배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 27%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;1.29배&lt;div class=\&quot;sub\&quot;&gt;0.59배 ~ 2.84배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 30%&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;3년&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;391개&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;1.56배&lt;div class=\&quot;sub\&quot;&gt;0.64배 ~ 3.82배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 20%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;1.51배&lt;div class=\&quot;sub\&quot;&gt;0.07배 ~ 30.4배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 41%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num best\&quot;&gt;3.28배&lt;div class=\&quot;sub\&quot;&gt;0.96배 ~ 11.2배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 6%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;2.50배&lt;div class=\&quot;sub\&quot;&gt;0.69배 ~ 9.03배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 12%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;2.05배&lt;div class=\&quot;sub\&quot;&gt;0.78배 ~ 5.43배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 11%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;2.74배&lt;div class=\&quot;sub\&quot;&gt;0.70배 ~ 10.6배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 11%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;2.08배&lt;div class=\&quot;sub\&quot;&gt;0.71배 ~ 6.09배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 13%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;2.10배&lt;div class=\&quot;sub\&quot;&gt;0.61배 ~ 7.29배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 16%&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;5년&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;367개&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;2.08배&lt;div class=\&quot;sub\&quot;&gt;0.65배 ~ 6.65배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 15%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;1.88배&lt;div class=\&quot;sub\&quot;&gt;0.04배 ~ 85.0배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 39%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num best\&quot;&gt;7.44배&lt;div class=\&quot;sub\&quot;&gt;1.39배 ~ 39.8배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 2%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;4.61배&lt;div class=\&quot;sub\&quot;&gt;0.73배 ~ 28.9배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 9%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;3.28배&lt;div class=\&quot;sub\&quot;&gt;0.84배 ~ 12.8배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 8%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;5.38배&lt;div class=\&quot;sub\&quot;&gt;0.85배 ~ 34.2배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 7%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;3.41배&lt;div class=\&quot;sub\&quot;&gt;0.73배 ~ 15.8배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 9%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;3.41배&lt;div class=\&quot;sub\&quot;&gt;0.69배 ~ 16.9배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 10%&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;10년&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;307개&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;3.39배&lt;div class=\&quot;sub\&quot;&gt;1.02배 ~ 11.3배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 5%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;1.91배&lt;div class=\&quot;sub\&quot;&gt;0.02배 ~ 233배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 41%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num best\&quot;&gt;42.8배&lt;div class=\&quot;sub\&quot;&gt;6.18배 ~ 297배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 0%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;17.3배&lt;div class=\&quot;sub\&quot;&gt;2.29배 ~ 130배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 1%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;8.65배&lt;div class=\&quot;sub\&quot;&gt;1.60배 ~ 46.8배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 2%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;22.6배&lt;div class=\&quot;sub\&quot;&gt;2.75배 ~ 186배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 1%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;8.98배&lt;div class=\&quot;sub\&quot;&gt;1.42배 ~ 57.0배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 3%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;7.99배&lt;div class=\&quot;sub\&quot;&gt;1.46배 ~ 43.7배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 2%&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;15년&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;247개&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;5.75배&lt;div class=\&quot;sub\&quot;&gt;1.76배 ~ 18.8배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 1%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;2.77배&lt;div class=\&quot;sub\&quot;&gt;0.02배 ~ 477배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 37%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num best\&quot;&gt;201배&lt;div class=\&quot;sub\&quot;&gt;49.5배 ~ 818배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 0%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;57.8배&lt;div class=\&quot;sub\&quot;&gt;15.0배 ~ 222배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 0%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;19.1배&lt;div class=\&quot;sub\&quot;&gt;5.59배 ~ 65.3배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 0%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;80.2배&lt;div class=\&quot;sub\&quot;&gt;19.2배 ~ 336배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 0%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;19.4배&lt;div class=\&quot;sub\&quot;&gt;4.53배 ~ 83.3배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 0%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;17.5배&lt;div class=\&quot;sub\&quot;&gt;3.73배 ~ 82.1배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 0%&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;20년&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;186개&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;10.2배&lt;div class=\&quot;sub\&quot;&gt;3.83배 ~ 27.3배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 0%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;3.76배&lt;div class=\&quot;sub\&quot;&gt;0.08배 ~ 188배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 29%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num best\&quot;&gt;1162배&lt;div class=\&quot;sub\&quot;&gt;371배 ~ 3638배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 0%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;219배&lt;div class=\&quot;sub\&quot;&gt;27.2배 ~ 1773배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 0%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;49.8배&lt;div class=\&quot;sub\&quot;&gt;20.0배 ~ 124배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 0%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;338배&lt;div class=\&quot;sub\&quot;&gt;80.8배 ~ 1414배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 0%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;51.3배&lt;div class=\&quot;sub\&quot;&gt;13.6배 ~ 194배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 0%&lt;/div&gt;&lt;/td&gt;&lt;td class=\&quot;num\&quot;&gt;45.0배&lt;div class=\&quot;sub\&quot;&gt;11.9배 ~ 170배&lt;/div&gt;&lt;div class=\&quot;sub\&quot;&gt;손실 0%&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&quot;, &quot;distLegend&quot;: {&quot;QQQ&quot;: &quot;3.39배&quot;, &quot;TQQQ&quot;: &quot;1.91배&quot;, &quot;persephone&quot;: &quot;42.8배&quot;, &quot;phrixus&quot;: &quot;17.3배&quot;, &quot;amphion&quot;: &quot;8.65배&quot;, &quot;icarus&quot;: &quot;22.6배&quot;, &quot;song&quot;: &quot;8.98배&quot;, &quot;omphalos&quot;: &quot;7.99배&quot;, &quot;band&quot;: &quot;QQQ 1.02배 ~ 11.3배&quot;}, &quot;jump&quot;: &quot;&lt;button type=\&quot;button\&quot; data-i=\&quot;2160\&quot;&gt;1998-07-20&lt;/button&gt;&lt;button type=\&quot;button\&quot; data-i=\&quot;2586\&quot;&gt;2000-03-27&lt;/button&gt;&lt;button type=\&quot;button\&quot; data-i=\&quot;2697\&quot;&gt;2000-09-01&lt;/button&gt;&lt;button type=\&quot;button\&quot; data-i=\&quot;2876\&quot;&gt;2001-05-21&lt;/button&gt;&lt;button type=\&quot;button\&quot; data-i=\&quot;3010\&quot;&gt;2001-12-05&lt;/button&gt;&lt;button type=\&quot;button\&quot; data-i=\&quot;4496\&quot;&gt;2007-10-31&lt;/button&gt;&lt;button type=\&quot;button\&quot; data-i=\&quot;7222\&quot;&gt;2018-08-29&lt;/button&gt;&lt;button type=\&quot;button\&quot; data-i=\&quot;7591\&quot;&gt;2020-02-19&lt;/button&gt;&lt;button type=\&quot;button\&quot; data-i=\&quot;8035\&quot;&gt;2021-11-19&lt;/button&gt;&lt;button type=\&quot;button\&quot; data-i=\&quot;8848\&quot;&gt;2025-02-19&lt;/button&gt;&quot;, &quot;meta&quot;: &quot;&lt;div&gt;&lt;dt&gt;진입일&lt;/dt&gt;&lt;dd&gt;2016-11-03&lt;/dd&gt;&lt;/div&gt;&lt;div&gt;&lt;dt&gt;나스닥100 종가&lt;/dt&gt;&lt;dd&gt;4,679.10 (사상 최고가 대비 -4.7%)&lt;/dd&gt;&lt;/div&gt;&lt;div&gt;&lt;dt&gt;진입 환율&lt;/dt&gt;&lt;dd&gt;1,142.7원&lt;/dd&gt;&lt;/div&gt;&lt;div class=\&quot;row\&quot;&gt;&lt;dt&gt;진입 배분&lt;/dt&gt;&lt;dd class=\&quot;alloc\&quot;&gt;&lt;span class=\&quot;k\&quot;&gt;Persephone&lt;/span&gt;&lt;span class=\&quot;v\&quot;&gt;TQQQ 100%&lt;/span&gt;&lt;span class=\&quot;k\&quot;&gt;Phrixus&lt;/span&gt;&lt;span class=\&quot;v\&quot;&gt;TQQQ 100%&lt;/span&gt;&lt;span class=\&quot;k\&quot;&gt;Amphion&lt;/span&gt;&lt;span class=\&quot;v\&quot;&gt;TQQQ 100%&lt;/span&gt;&lt;span class=\&quot;k\&quot;&gt;Icarus&lt;/span&gt;&lt;span class=\&quot;v\&quot;&gt;TQQQ 100%&lt;/span&gt;&lt;span class=\&quot;k\&quot;&gt;Song&lt;/span&gt;&lt;span class=\&quot;v\&quot;&gt;TQQQ 100%&lt;/span&gt;&lt;span class=\&quot;k\&quot;&gt;Omphalos&lt;/span&gt;&lt;span class=\&quot;v\&quot;&gt;TQQQ 100%&lt;/span&gt;&lt;/dd&gt;&lt;/div&gt;&quot;, &quot;caption&quot;: &quot;2016-11-03 진입, 2026-11-13까지 10.0년. 평가금은 그동안 낸 양도세를 뺀 금액이고, &#x27;전부 팔았을 때 세후&#x27;는 지금 모두 팔 때 낼 세금까지 뺀 금액이다.&quot;, &quot;notes&quot;: &quot;&quot;}"></div><!-- nasdaq:end -->
+  
+  
+
+  <!-- tests:begin -->
+  <template id="eSet">
+  <!-- 자료 기간은 탭마다 다르므로 탭 안의 맨 위에 둔다 (`@arngard` 2026-10-13). 첫 소개는 비교의 대상과 가정을 밝힌다. -->
+  <p class="stamp" data-e="eStamp"></p>
+  <p class="note intro" data-only="nasdaq">트라이팟 플레이버 여섯과 QQQ, TQQQ 단순 보유를 같은 세금 가정으로 비교한다. 자료는 1990년 이후 나스닥100의 실제 주가다. 이 기간은 긴 상승장이라 레버리지를 크게 쓰는 플레이버가 유리하게 보인다.</p>
+  <div class="note intro" data-only="nikkei">
+    <p>트라이팟 플레이버 여섯과 QQQ, TQQQ 단순 보유를 같은 세금 가정으로 비교한다. 자료는 나스닥100이 1988년부터 닛케이225와 똑같이 움직였다고 가정한 가상의 주가다. 지수 값도 닛케이225를 그대로 쓰고, QQQ와 TQQQ도 이 가상 지수를 따른다고 놓았다.</p>
+    <p>닛케이225는 1989년 말의 고점을 34년 뒤인 2024년에야 되찾았다. 그 사이 긴 침체와 여러 번의 폭락이 있었고, 그 뒤로는 크게 올랐다. 이 탭은 긴 침체장을 지날 때 같은 규칙이 어떤 결과를 내는지 보여 준다.</p>
+    <p>플레이버의 파라미터는 주로 미국장의 흐름을 보고 고른 값이다. 성격이 다른 시장에 같은 파라미터를 그대로 적용했으므로, 이 탭의 성과는 그 자체로 플레이버를 낮게 평가하는 쪽으로 기운다.</p>
+  </div>
+  <section data-e="eProblems" class="problems" hidden></section>
+
+  <!-- 본문은 처음부터 보인다. 자료로 정해지는 글과 '기간에 따른 추이' 표는 생성이 미리 그려 탭 묶음의 data-pre에 넣고,
+       자료를 받기 전이나 받지 못했을 때는 차트 자리에 자리 표시를, 나머지 값 자리에 대시를 둔다 (`@arngard` 2026-10-23).
+       자료는 페이지를 열 때 미리 받아 두고, 차트는 탭이 보일 때 그린다(comparison.js). -->
+  <div data-e="eBody" class="ebody">
+    <section class="tpanel">
+      <h2>기간에 따른 추이</h2>
+      <!-- 섹션 안의 순서: 제목, 차트에 대한 필수 설명, 차트(조작 줄, 범례, 시간 띠 같은 보조 UI 포함), 표에 대한 필수 설명,
+           표, 계산법 같은 부연 설명 (`@arngard` 2026-10-13).
+           부연은 그 섹션 맨 아래에 줄글로 두어 차트와 표에 집중하게 하고, 탭 전체에 걸치는 것만 '가정과 한계'에 둔다 (`@arngard` 2026-11-03).
+           같은 안내를 두 번 하지 않는다. 보조 UI는 차트에 붙여 한 몸처럼 둔다. 현황 탭에 이미 나온
+           용어(WnH90 등)는 다시 풀어 쓰지 않는다. -->
+      <p class="note lead" data-e="eDistKey"></p>
+      <div class="controls">
+        <div class="pickrow"><span class="lbl">기준</span><div class="ranges base" data-e="eDistBase"><button type="button" class="on" data-v="seed">원금 대비</button><button type="button" data-v="qqq">QQQ 대비</button></div></div>
+        <div class="pickrow"><span class="lbl">기간</span><div class="ranges" data-e="eDistSpan"></div></div>
+        <div class="pickrow"><span class="lbl">90% 범위</span><div class="ranges" data-e="eBand"></div></div>
+      </div>
+      <div class="chartbox"><div data-e="eDistChart" class="chart"></div><div data-e="eDistLegend" class="legend"></div></div>
+      <p class="note lead after">표의 칸은 중심값, 90% 범위, 손실 확률(QQQ 대비에서는 QQQ에 못 미칠 확률)이다.</p>
+      <div class="wide" data-e="eDistTable"></div>
+      <p class="note" data-e="eDistBasis"></p>
+    </section>
+
+    <section class="tpanel">
+      <h2>진입일 탐색</h2>
+      <p class="note lead">진입일에 1억 원을 넣은 뒤의 결과다. 차트 왼쪽 끝이 진입일이고, 차트를 끌거나 가로로 스크롤해 진입일을 바꾼다. 범례를 눌러 선을 켜고 끈다.</p>
+      <div class="controls">
+        <div class="pickrow"><span class="lbl">기준</span><div class="ranges base" data-e="eExBase"><button type="button" class="on" data-v="seed">원금 대비</button><button type="button" data-v="qqq">QQQ 대비</button></div></div>
+        <div class="pickrow"><span class="lbl">기간</span><div class="ranges" data-e="eSpan"></div></div>
+        <div class="pickrow"><span class="lbl">큰 하락 직전 고점</span><div class="ranges" data-e="eJump"></div></div>
+      </div>
+      <dl class="emeta" data-e="eExMeta"></dl>
+      <div class="chartbox"><div data-e="eExChart" class="chart tall"></div><div data-e="eExLegend" class="legend"></div></div>
+      <!-- 시간 창. 자료 전체의 지수 위에 지금 보는 구간을 상자로 보인다. 누르거나 끌면 그 자리로 옮긴다. -->
+      <div class="strip" data-e="eStrip" aria-hidden="true"></div>
+      <p class="note lead after" data-e="eExCaption"></p>
+      <div class="wide" data-e="eExTable"></div>
+      <p class="note">차트의 세로축은 0.01배 아래를 잘라 낸다.</p>
+    </section>
+
+    <section class="tpanel">
+      <h2>가정과 한계</h2>
+      <!-- 경고만 짧게 두고 세율, 보수, 합성식, 가짜 VIX 만드는 방법 같은 구체 값은 쓰지 않는다. 그 내용은
+           tripod-flavor-comparison/assumptions.md에 있다 (`@arngard` 2026-10-13). -->
+      <ul class="note assume">
+        <li>차트와 표의 배수는 원화 평가금을 투자금(원금 대비)이나 같은 날의 QQQ 보유 평가금(QQQ 대비)으로 나눈 값이다.</li>
+        <li>세금은 한국에 사는 개인을 기준으로 단순하게 계산했으므로 실제 세금과 다를 수 있다. 양도세 기본공제가 고정 금액이라 투자금에 따라 세후 결과가 달라지므로, 투자금을 1억 원으로 정했다.</li>
+        <li>플레이버는 배분을 바꿀 때마다 세금을 내고, QQQ와 TQQQ 보유는 팔 때 한 번만 낸다. 그래서 세금을 미루는 보유 쪽이 유리하게 보인다.</li>
+        <li>상품 수익은 지수로 합성한 값이라 실제 상품의 수익과 다를 수 있다.</li>
+        <li data-only="nikkei">변동성 지표는 추정한 값이다. 환율은 실제 원/달러 환율을 쓴다. 이 가상 주가는 매일 갱신되지 않는다.</li>
+        <li>과거 자료로 계산한 결과이며, 앞으로도 같은 장세가 이어진다는 보장은 없다.</li>
+      </ul>
+      <p class="note small" data-e="eNotes"></p>
+    </section>
+  </div>
+  </template>
+  <!-- tests:end -->
+</div>
+<script type="application/json" id="eventsData">[{"from":"1990-07-16","to":"1990-10-11","name":"걸프전"},{"from":"1994-03-17","to":"1994-06-24","name":"채권 대학살"},{"from":"1997-10-09","to":"1997-12-24","name":"아시아 외환위기"},{"from":"1998-07-20","to":"1998-10-08","name":"러시아 디폴트"},{"from":"2000-03-10","to":"2002-10-09","name":"닷컴 버블"},{"from":"2007-10-31","to":"2009-03-09","name":"서브프라임 모기지"},{"from":"2010-04-23","to":"2010-07-02","name":"유럽 재정위기"},{"from":"2011-07-22","to":"2011-08-19","name":"미국 신용등급 강등"},{"from":"2015-07-20","to":"2015-08-25","name":"위안화 절하"},{"from":"2018-08-29","to":"2018-12-24","name":"미중 무역전쟁"},{"from":"2020-02-19","to":"2020-03-23","name":"코로나19"},{"from":"2022-02-16","to":"2022-03-14","name":"우크라이나 전쟁"},{"from":"2022-06-15","to":"2022-11-02","name":"연준 자이언트스텝"},{"from":"2024-07-31","to":"2024-08-07","name":"일본 금리 쇼크"},{"from":"2025-02-19","to":"2025-04-08","name":"관세 충격"},{"from":"2026-01-28","to":"2026-03-30","name":"이란 전쟁"}]</script>
+<footer class="tripod sitenote"><p class="note">이 페이지는 아릉이 규칙 기반 전략을 연구하며 매일 기계적으로 계산해 공개하는 연구 결과다. 판정과 행동 문장은 그 규칙이 내는 계산 결과이며 투자 권유가 아니다. 이를 참고해 매매하는 행위와 그 결과의 책임은 매매하는 본인에게 있다. 자료: Yahoo Finance, FRED.</p></footer>
+<script src="https://cdn.jsdelivr.net/npm/lightweight-charts@5.2.1/dist/lightweight-charts.standalone.production.js"
+  integrity="sha384-KkYqTZlM13Zya6fVUF3IGCBOQ1ehFeJVVgxaVvD/0MebineF9EI8Jkd3NnWNChqN"
+  crossorigin="anonymous"></script>
+<script src="../chartkit.js?v=839ffa7bbe"></script>
+<script src="../comparison.js?v=c332caa9fb"></script>
+<script>addEventListener("load", function () { setTimeout(function () { ["../comparison-nikkei.json?v=2026-11-13T23:31:34Z"].forEach(function (u) { fetch(u).catch(function () {}); }); }, 0); });</script>
+</body>
+</html>
